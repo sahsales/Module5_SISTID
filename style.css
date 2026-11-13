@@ -155,3 +155,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 @media (max-width: 1100px) { .kpis4 { grid-template-columns: 1fr 1fr; } .painel { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .kpis4 { grid-template-columns: 1fr; } .abas { overflow-x: auto; } }
+
+tbody tr[data-id] { cursor: pointer; }
+tbody tr[data-id]:hover td { background: #F4F7F8; }
+tbody tr.sel:hover td, tr.sel td { background: #EEF4F2; }

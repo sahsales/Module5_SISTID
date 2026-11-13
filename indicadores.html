@@ -79,41 +79,34 @@
           <table>
             <thead><tr><th>Indicador</th><th>Meta</th><th>Resultado</th><th>Progresso</th><th>Status</th><th>Última atualização</th><th></th></tr></thead>
             <tbody id="linhas">
-              <tr class="sel"><td><b>Cobertura territorial monitorada</b><small>Selecionado · Ecológicos · Rio Verde</small></td><td>90%</td><td>72%</td><td><div class="prog"><i style="--p:80%"></i>80%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr><td><b>Pontos de água monitorados</b><small>Ecológicos · TI Rio Verde</small></td><td>12 pontos</td><td>12 pontos</td><td><div class="prog"><i style="--p:100%"></i>100%</div></td><td><span class="badge baixa" style="margin:0">● Em dia</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr><td><b>Áreas em recuperação</b><small>Ecológicos · TI Rio Verde</small></td><td>50 ha</td><td>35 ha</td><td><div class="prog"><i style="--p:70%"></i>70%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>29/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr><td><b>Rondas de vigilância territorial</b><small>Ecológicos · TI Rio Verde</small></td><td>24 rondas</td><td>16 rondas</td><td><div class="prog"><i style="--p:67%"></i>67%</div></td><td><span class="badge alta" style="margin:0">● Atrasado</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr data-id="cobertura" tabindex="0"><td><b>Cobertura territorial monitorada</b><small></small></td><td>90%</td><td>72%</td><td><div class="prog"><i style="--p:80%"></i>80%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr data-id="agua" tabindex="0"><td><b>Pontos de água monitorados</b><small></small></td><td>12 pontos</td><td>12 pontos</td><td><div class="prog"><i style="--p:100%"></i>100%</div></td><td><span class="badge baixa" style="margin:0">● Em dia</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr data-id="areas" tabindex="0"><td><b>Áreas em recuperação</b><small></small></td><td>50 ha</td><td>35 ha</td><td><div class="prog"><i style="--p:70%"></i>70%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>29/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr data-id="rondas" tabindex="0"><td><b>Rondas de vigilância territorial</b><small></small></td><td>24 rondas</td><td>16 rondas</td><td><div class="prog"><i style="--p:67%"></i>67%</div></td><td><span class="badge alta" style="margin:0">● Atrasado</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
             </tbody>
           </table>
         </div>
         <div class="rodape-tab"><span>Exibindo 1–4 de 4 indicadores · Metas para o 1º semestre de 2026</span><span class="pag">‹ <span class="atual-pg">1</span> ›</span></div>
       </section>
 
-      <section class="card" id="painel">
-        <h2>Cobertura territorial monitorada</h2>
-        <p class="leg">PAINEL DO INDICADOR SELECIONADO · Ecológicos · Rio Verde</p>
+      <section class="card" id="painel" aria-live="polite">
+        <h2 id="p-titulo"></h2>
+        <p class="leg" id="p-sub"></p>
         <div class="painel">
           <div>
-            <p class="desc">Percentual da área do território com monitoramento atualizado. A apuração considera registros validados pelas equipes de campo e pelas comunidades.</p>
+            <p class="desc" id="p-desc"></p>
             <div class="mini">
-              <div><small>Meta semestral</small><strong>90%</strong></div>
-              <div><small>Resultado atual</small><strong>72%</strong></div>
-              <div><small>Alcance da meta</small><strong>80%</strong></div>
+              <div><small>Meta semestral</small><strong id="p-meta"></strong></div>
+              <div><small>Resultado atual</small><strong id="p-res"></strong></div>
+              <div><small>Alcance da meta</small><strong id="p-alc"></strong></div>
             </div>
-            <span class="badge media" style="margin:0">● Em atenção</span>
+            <span class="badge" id="p-status" style="margin:0"></span>
           </div>
           <div>
-            <h3>Evolução da cobertura territorial (%)</h3>
-            <svg viewBox="0 0 580 200" role="img" aria-label="Cobertura territorial de janeiro a junho, de 64% a 72%, contra meta de 90%">
-              <g stroke="#E4E9EB"><path d="M40 20H560M40 66.7H560M40 113.3H560M40 160H560"/></g>
-              <g text-anchor="end"><text x="30" y="24">100</text><text x="30" y="70">75</text><text x="30" y="117">50</text><text x="30" y="164">25</text></g>
-              <g text-anchor="middle"><text x="40" y="185">Jan</text><text x="140" y="185">Fev</text><text x="240" y="185">Mar</text><text x="340" y="185">Abr</text><text x="440" y="185">Mai</text><text x="540" y="185">Jun</text></g>
-              <path d="M40 38.7H540" stroke="#D7B548" stroke-width="2" stroke-dasharray="6 4"/>
-              <polyline points="40,86.8 140,83.1 240,79.3 340,75.6 440,73.7 540,71.9" fill="none" stroke="#155344" stroke-width="2.5"/>
-              <g fill="#155344"><circle cx="40" cy="86.8" r="3"/><circle cx="140" cy="83.1" r="3"/><circle cx="240" cy="79.3" r="3"/><circle cx="340" cy="75.6" r="3"/><circle cx="440" cy="73.7" r="3"/><circle cx="540" cy="71.9" r="3"/></g>
-            </svg>
-            <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i>Cobertura (%)</span><span><i class="pt" style="background:var(--ouro)"></i>Meta: 90%</span></div>
-            <p class="leg" style="margin-top:8px">Jan 64% · Fev 66% · Mar 68% · Abr 70% · Mai 71% · Jun 72%</p>
+            <h3 id="p-gtitulo"></h3>
+            <svg id="p-svg" viewBox="0 0 580 200" role="img" aria-label="Evolução do indicador de janeiro a junho"></svg>
+            <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i><span id="p-leg1"></span></span><span><i class="pt" style="background:var(--ouro)"></i><span id="p-leg2"></span></span></div>
+            <p class="leg" id="p-serie" style="margin-top:8px"></p>
           </div>
         </div>
       </section>
@@ -123,13 +116,84 @@
   </div>
 
   <script>
+    // Dados dos indicadores. Só "cobertura" vem do Figma; os outros três são exemplos inventados para o protótipo.
+    var D = {
+      cobertura: { titulo: "Cobertura territorial monitorada", sufixo: "%", min: 25, max: 100, passo: 25, metaVal: 90, serie: [64,66,68,70,71,72],
+        desc: "Percentual da área do território com monitoramento atualizado. A apuração considera registros validados pelas equipes de campo e pelas comunidades.",
+        meta: "90%", res: "72%", alc: "80%", cls: "media", st: "Em atenção", gt: "Evolução da cobertura territorial (%)", l1: "Cobertura (%)", l2: "Meta: 90%" },
+      agua: { titulo: "Pontos de água monitorados", sufixo: "", min: 0, max: 15, passo: 5, metaVal: 12, serie: [8,9,10,11,12,12],
+        desc: "Quantidade de pontos de água do território com coleta e verificação periódicas pelas equipes de campo.",
+        meta: "12 pontos", res: "12 pontos", alc: "100%", cls: "baixa", st: "Em dia", gt: "Evolução dos pontos monitorados", l1: "Pontos monitorados", l2: "Meta: 12 pontos" },
+      areas: { titulo: "Áreas em recuperação", sufixo: " ha", min: 0, max: 60, passo: 20, metaVal: 50, serie: [10,16,22,27,31,35],
+        desc: "Área acumulada, em hectares, com ações de recuperação em andamento ou concluídas no território.",
+        meta: "50 ha", res: "35 ha", alc: "70%", cls: "media", st: "Em atenção", gt: "Evolução da área em recuperação (ha)", l1: "Área recuperada (ha)", l2: "Meta: 50 ha" },
+      rondas: { titulo: "Rondas de vigilância territorial", sufixo: "", min: 0, max: 30, passo: 10, metaVal: 24, serie: [2,5,8,11,14,16],
+        desc: "Número acumulado de rondas de vigilância concluídas pelas equipes de proteção no semestre.",
+        meta: "24 rondas", res: "16 rondas", alc: "67%", cls: "alta", st: "Atrasado", gt: "Evolução das rondas concluídas", l1: "Rondas concluídas", l2: "Meta: 24 rondas" }
+    };
+    var meses = ["Jan","Fev","Mar","Abr","Mai","Jun"];
+    var linhas = document.querySelectorAll("#linhas tr");
+    var painel = document.getElementById("painel");
+    var atual = null;
+
+    function y(d, v) { return 160 - (v - d.min) / (d.max - d.min) * 140; }
+
+    function desenhar(d) {
+      var s = "<g stroke='#E4E9EB'>", t = "<g text-anchor='end'>", i, v;
+      for (v = d.min; v <= d.max; v += d.passo) {
+        s += "<path d='M40 " + y(d, v).toFixed(1) + "H560'/>";
+        t += "<text x='30' y='" + (y(d, v) + 4).toFixed(1) + "'>" + v + "</text>";
+      }
+      s += "</g>" + t + "</g><g text-anchor='middle'>";
+      for (i = 0; i < 6; i++) s += "<text x='" + (40 + i * 100) + "' y='185'>" + meses[i] + "</text>";
+      s += "</g><path d='M40 " + y(d, d.metaVal).toFixed(1) + "H540' stroke='#D7B548' stroke-width='2' stroke-dasharray='6 4'/>";
+      var pts = d.serie.map(function (n, k) { return (40 + k * 100) + "," + y(d, n).toFixed(1); });
+      s += "<polyline points='" + pts.join(" ") + "' fill='none' stroke='#155344' stroke-width='2.5'/><g fill='#155344'>";
+      pts.forEach(function (p) { var c = p.split(","); s += "<circle cx='" + c[0] + "' cy='" + c[1] + "' r='3'/>"; });
+      document.getElementById("p-svg").innerHTML = s + "</g>";
+    }
+
+    function mostrar(id) {
+      var d = D[id];
+      document.getElementById("p-titulo").textContent = d.titulo;
+      document.getElementById("p-sub").textContent = "PAINEL DO INDICADOR SELECIONADO · Ecológicos · Rio Verde";
+      document.getElementById("p-desc").textContent = d.desc;
+      document.getElementById("p-meta").textContent = d.meta;
+      document.getElementById("p-res").textContent = d.res;
+      document.getElementById("p-alc").textContent = d.alc;
+      var st = document.getElementById("p-status");
+      st.className = "badge " + d.cls; st.textContent = "● " + d.st;
+      document.getElementById("p-gtitulo").textContent = d.gt;
+      document.getElementById("p-leg1").textContent = d.l1;
+      document.getElementById("p-leg2").textContent = d.l2;
+      document.getElementById("p-serie").textContent = d.serie.map(function (n, k) { return meses[k] + " " + n + d.sufixo; }).join(" · ");
+      desenhar(d);
+    }
+
+    function selecionar(id) {
+      if (atual === id) { atual = null; } else { atual = id; }
+      linhas.forEach(function (tr) {
+        var sel = tr.dataset.id === atual;
+        tr.classList.toggle("sel", sel);
+        tr.setAttribute("aria-selected", sel);
+        tr.querySelector("small").textContent = sel ? "Selecionado · Ecológicos · Rio Verde" : "Ecológicos · TI Rio Verde";
+      });
+      painel.hidden = !atual;
+      if (atual) mostrar(atual);
+    }
+
+    linhas.forEach(function (tr) {
+      tr.addEventListener("click", function (e) { if (e.target.closest("a")) e.preventDefault(); selecionar(tr.dataset.id); });
+      tr.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selecionar(tr.dataset.id); } });
+    });
+
     // Busca simples: esconde as linhas que não contêm o texto digitado
     document.getElementById("busca").addEventListener("input", function (e) {
       var termo = e.target.value.toLowerCase();
-      document.querySelectorAll("#linhas tr").forEach(function (tr) {
-        tr.hidden = tr.textContent.toLowerCase().indexOf(termo) === -1;
-      });
+      linhas.forEach(function (tr) { tr.hidden = tr.textContent.toLowerCase().indexOf(termo) === -1; });
     });
+
+    selecionar("cobertura"); // estado inicial, igual ao Figma
   </script>
 </body>
 </html>
