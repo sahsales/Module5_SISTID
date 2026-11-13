@@ -3,163 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minhas anotações</title>
-  <style>
-    :root {
-      --fundo: #f7f6f3;
-      --texto: #1f2328;
-      --suave: #6b7280;
-      --borda: #d9d6cf;
-      --destaque: #1d5c63;
-      --perigo: #b3261e;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --fundo: #16181a;
-        --texto: #e8e6e1;
-        --suave: #9aa0a6;
-        --borda: #33373a;
-        --destaque: #6fc2c9;
-        --perigo: #f2877f;
-      }
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--fundo);
-      color: var(--texto);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      line-height: 1.5;
-    }
-    main { max-width: 560px; margin: 0 auto; padding: 2rem 1rem; }
-    h1 { font-size: 1.6rem; margin: 0 0 1.5rem; }
-    form { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
-    input[type="text"] {
-      flex: 1;
-      padding: .6rem .75rem;
-      font: inherit;
-      color: inherit;
-      background: transparent;
-      border: 1px solid var(--borda);
-      border-radius: 6px;
-    }
-    button {
-      font: inherit;
-      cursor: pointer;
-      border-radius: 6px;
-      border: 1px solid var(--destaque);
-      background: var(--destaque);
-      color: var(--fundo);
-      padding: .6rem 1rem;
-    }
-    button.sec {
-      background: transparent;
-      color: var(--perigo);
-      border-color: var(--borda);
-      padding: .3rem .6rem;
-    }
-    :focus-visible { outline: 2px solid var(--destaque); outline-offset: 2px; }
-    ul { list-style: none; padding: 0; margin: 0; }
-    li {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      padding: .7rem 0;
-      border-bottom: 1px solid var(--borda);
-    }
-    li span { flex: 1; word-break: break-word; }
-    li.feito span { text-decoration: line-through; color: var(--suave); }
-    .vazio { color: var(--suave); }
-    footer { margin-top: 1.5rem; color: var(--suave); font-size: .85rem; }
-  </style>
+  <title>Visão geral · SISTID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <h1>Minhas anotações</h1>
+  <aside class="menu">
+    <a class="logo" href="index.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
+    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
+    <nav>
+      <a href="#">Painel Principal</a>
+      <a href="#">Base Territorial</a>
+      <a href="#">Governança</a>
+      <a href="#">Etnozoneamento</a>
+      <a href="#">Formação</a>
+      <a href="#">Pesquisa e Dados</a>
+      <a href="index.html" class="ativo">Monitoramento</a>
+      <a href="index.html" class="sub ativo">Visão geral</a>
+      <a href="indicadores.html" class="sub">Indicadores e metas</a>
+      <a href="relatorios.html" class="sub">Relatórios</a>
+      <a href="#">Comunicação</a>
+      <a href="#">Gestão Documental</a>
+      <a href="#">Administração</a>
+    </nav>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+  </aside>
 
-    <form id="form">
-      <input type="text" id="texto" placeholder="Escreva algo e aperte Enter" aria-label="Nova anotação" required>
-      <button type="submit">Adicionar</button>
-    </form>
+  <div>
+    <header class="topo">
+      <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Visão geral</span></div>
+      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+    </header>
 
-    <ul id="lista"></ul>
-    <p class="vazio" id="vazio">Nenhuma anotação ainda. Adicione a primeira acima.</p>
+    <main>
+      <div class="cabeca">
+        <div>
+          <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
+          <h1>Visão geral.</h1>
+          <p>Acompanhe os resultados, as ações e os sinais de atenção do território.</p>
+        </div>
+        <button class="botao" type="button">Exportar resumo</button>
+      </div>
 
-    <footer>As anotações ficam salvas apenas neste navegador.</footer>
-  </main>
+      <section class="card filtros" aria-label="Filtros">
+        <label>Território<select><option>TI Rio Verde</option></select></label>
+        <label>Comunidades<select><option>Todas as comunidades (4)</option></select></label>
+        <label>Período<select><option>Janeiro a junho de 2026</option></select></label>
+        <button type="button">Filtros</button>
+      </section>
 
-  <script>
-    const CHAVE = "minhas-anotacoes";
-    const form = document.getElementById("form");
-    const campo = document.getElementById("texto");
-    const lista = document.getElementById("lista");
-    const vazio = document.getElementById("vazio");
+      <section class="kpis">
+        <div class="card kpi"><small>Terras indígenas</small><strong>1</strong><span>4 comunidades acompanhadas</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi"><small>População abrangida</small><strong>1.280</strong><span>Pessoas no território</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi"><small>Cobertura territorial</small><strong>72%</strong><span>+8 p.p. no semestre</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi"><small>Demandas atendidas</small><strong>84%</strong><span>42 de 50 demandas</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi"><small>Ocorrências ambientais</small><strong>18</strong><span>3 requerem acompanhamento</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi"><small>Ações executadas</small><strong>128</strong><span>85% da meta de 150 ações</span><a href="#">Ver detalhes →</a></div>
+      </section>
 
-    function carregar() {
-      try {
-        return JSON.parse(localStorage.getItem(CHAVE)) || [];
-      } catch (e) {
-        return [];
-      }
-    }
+      <section class="grade">
+        <div class="card">
+          <h2>Evolução das ações</h2>
+          <p class="leg">Janeiro a junho de 2026 · 128 ações executadas</p>
+          <svg viewBox="0 0 580 200" role="img" aria-label="Linha de ações executadas e meta mensal, de janeiro a junho">
+            <g stroke="#E4E9EB"><path d="M40 20H560M40 66.7H560M40 113.3H560M40 160H560"/></g>
+            <g text-anchor="end"><text x="30" y="24">40</text><text x="30" y="70">30</text><text x="30" y="117">20</text><text x="30" y="164">10</text></g>
+            <g text-anchor="middle"><text x="40" y="185">Jan</text><text x="140" y="185">Fev</text><text x="240" y="185">Mar</text><text x="340" y="185">Abr</text><text x="440" y="185">Mai</text><text x="540" y="185">Jun</text></g>
+            <polyline points="40,136.7 140,108.7 240,85.3 340,85.3 440,62 540,38.7" fill="none" stroke="#D7B548" stroke-width="2" stroke-dasharray="6 4"/>
+            <polyline points="40,155.3 140,132 240,108.7 340,99.3 440,71.3 540,62" fill="none" stroke="#155344" stroke-width="2.5"/>
+            <g fill="#155344"><circle cx="40" cy="155.3" r="3"/><circle cx="140" cy="132" r="3"/><circle cx="240" cy="108.7" r="3"/><circle cx="340" cy="99.3" r="3"/><circle cx="440" cy="71.3" r="3"/><circle cx="540" cy="62" r="3"/></g>
+          </svg>
+          <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i>Ações executadas</span><span><i class="pt" style="background:var(--ouro)"></i>Meta mensal</span></div>
+        </div>
 
-    function salvar(itens) {
-      try {
-        localStorage.setItem(CHAVE, JSON.stringify(itens));
-      } catch (e) {
-        alert("Não foi possível salvar neste navegador.");
-      }
-    }
+        <div class="card">
+          <h2>Comparação entre comunidades</h2>
+          <p class="leg">Ações executadas no semestre · TI Rio Verde</p>
+          <div class="barra"><span>Aldeia Nova</span><div><i style="width:95%"></i></div><b>38</b></div>
+          <div class="barra"><span>Boa Esperança</span><div><i style="width:85%"></i></div><b>34</b></div>
+          <div class="barra"><span>Água Clara</span><div><i style="width:75%"></i></div><b>30</b></div>
+          <div class="barra"><span>São Miguel</span><div><i style="width:65%"></i></div><b>26</b></div>
+          <p class="leg" style="margin-top:24px">128 ações realizadas nas quatro comunidades do território.</p>
+        </div>
 
-    let itens = carregar();
+        <div class="card">
+          <h2>Fontes de dados</h2>
+          <p class="leg">Origem dos registros utilizados no monitoramento</p>
+          <div class="duplo">
+            <svg viewBox="0 0 120 120" width="180" role="img" aria-label="240 registros validados por fonte">
+              <g fill="none" stroke-width="14" transform="rotate(-90 60 60)">
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#155344" stroke-dasharray="45 55"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#559C85" stroke-dasharray="30 70" stroke-dashoffset="-45"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#D7B548" stroke-dasharray="20 80" stroke-dashoffset="-75"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#78878A" stroke-dasharray="5 95" stroke-dashoffset="-95"/>
+              </g>
+              <text x="60" y="64" text-anchor="middle" style="font-size:20px;font-weight:500;fill:#1C2B2A">240</text>
+              <text x="60" y="76" text-anchor="middle" style="font-size:6px">registros validados</text>
+            </svg>
+            <div class="fontes">
+              <p><span><i class="pt" style="background:#155344"></i>Registros comunitários<small>108 registros</small></span><b>45%</b></p>
+              <p><span><i class="pt" style="background:#559C85"></i>Equipes de campo<small>72 registros</small></span><b>30%</b></p>
+              <p><span><i class="pt" style="background:#D7B548"></i>Sensoriamento remoto<small>48 registros</small></span><b>20%</b></p>
+              <p><span><i class="pt" style="background:#78878A"></i>Bases institucionais<small>12 registros</small></span><b>5%</b></p>
+            </div>
+          </div>
+        </div>
 
-    function desenhar() {
-      lista.innerHTML = "";
-      vazio.hidden = itens.length > 0;
+        <div class="card">
+          <h2>Desempenho por dimensão</h2>
+          <p class="leg">Índice sintético de 0 a 100</p>
+          <div class="duplo">
+            <svg viewBox="0 0 220 200" width="240" role="img" aria-label="Radar de desempenho por dimensão">
+              <g transform="translate(10 0)" fill="none" stroke="#E4E9EB">
+                <polygon points="100,30 160.6,65 160.6,135 100,170 39.4,135 39.4,65"/>
+                <polygon points="100,65 130.3,82.5 130.3,117.5 100,135 69.7,117.5 69.7,82.5"/>
+                <polygon points="100,49.6 141.2,76.2 149.1,128.4 100,152.5 61.2,122.4 52.7,72.7" fill="rgba(85,156,133,.2)" stroke="#155344" stroke-width="2"/>
+              </g>
+              <g text-anchor="middle"><text x="110" y="22">Ecológica</text><text x="110" y="190">Governança</text></g>
+              <text x="170" y="62">Econômica</text><text x="178" y="145">Social</text><text x="0" y="145">Pol. públicas</text><text x="0" y="62">Territorial</text>
+            </svg>
+            <div class="dim">
+              <p>Ecológica <b>72/100</b></p><p>Econômica <b>68/100</b></p><p>Social <b>81/100</b></p>
+              <p>Governança <b>75/100</b></p><p>Políticas públicas <b>64/100</b></p><p>Territorial <b>78/100</b></p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      itens.forEach((item) => {
-        const li = document.createElement("li");
-        if (item.feito) li.classList.add("feito");
+      <section class="card">
+        <h2>Alertas e pontos de atenção</h2>
+        <p class="leg">3 alertas abertos · priorize os acompanhamentos do território</p>
+        <div class="alerta"><div><b>Vigilância territorial abaixo da meta</b><small>16 de 24 rondas concluídas · São Miguel · Responsável: equipe de proteção</small></div><div>30 jun 2026<span class="badge alta">● Alta</span><a href="#">Ver alerta →</a></div></div>
+        <div class="alerta"><div><b>Recuperação de áreas requer acompanhamento</b><small>35 de 50 hectares recuperados · Boa Esperança · Responsável: equipe ambiental</small></div><div>29 jun 2026<span class="badge media">● Média</span><a href="#">Ver alerta →</a></div></div>
+        <div class="alerta"><div><b>Consolidação dos registros de campo</b><small>Validação complementar de 12 registros · Água Clara · Responsável: equipe de dados</small></div><div>28 jun 2026<span class="badge baixa">● Baixa</span><a href="#">Ver alerta →</a></div></div>
+      </section>
 
-        const cb = document.createElement("input");
-        cb.type = "checkbox";
-        cb.checked = item.feito;
-        cb.setAttribute("aria-label", "Marcar como feito");
-        cb.addEventListener("change", () => {
-          item.feito = cb.checked;
-          salvar(itens);
-          desenhar();
-        });
-
-        const span = document.createElement("span");
-        span.textContent = item.texto; // textContent evita injeção de HTML
-
-        const del = document.createElement("button");
-        del.type = "button";
-        del.className = "sec";
-        del.textContent = "Excluir";
-        del.addEventListener("click", () => {
-          itens = itens.filter((i) => i.id !== item.id);
-          salvar(itens);
-          desenhar();
-        });
-
-        li.append(cb, span, del);
-        lista.appendChild(li);
-      });
-    }
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const texto = campo.value.trim();
-      if (!texto) return;
-      itens.push({ id: Date.now(), texto, feito: false });
-      salvar(itens);
-      campo.value = "";
-      desenhar();
-    });
-
-    desenhar();
-  </script>
+      <p class="rodape">Atualizado em 30/06/2026 · 17:30</p>
+    </main>
+  </div>
 </body>
 </html>
