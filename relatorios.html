@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relatórios · SISTID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="menu">
+    <a class="logo" href="index.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
+    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
+    <nav>
+      <a href="#">Painel Principal</a>
+      <a href="#">Base Territorial</a>
+      <a href="#">Governança</a>
+      <a href="#">Etnozoneamento</a>
+      <a href="#">Formação</a>
+      <a href="#">Pesquisa e Dados</a>
+      <a href="index.html" class="ativo">Monitoramento</a>
+      <a href="index.html" class="sub">Visão geral</a>
+      <a href="indicadores.html" class="sub">Indicadores e metas</a>
+      <a href="relatorios.html" class="sub ativo">Relatórios</a>
+      <a href="#">Comunicação</a>
+      <a href="#">Gestão Documental</a>
+      <a href="#">Administração</a>
+    </nav>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+  </aside>
+
+  <div>
+    <header class="topo">
+      <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Relatórios</span></div>
+      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+    </header>
+
+    <main>
+      <div class="cabeca">
+        <div>
+          <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
+          <h1>Relatórios.</h1>
+          <p>Transforme os resultados do monitoramento em relatórios para análise e compartilhamento.</p>
+        </div>
+        <button class="botao gerar" type="button">Gerar relatório</button>
+      </div>
+
+      <div class="rel-grade">
+        <section class="card campos" id="cfg">
+          <h2>Configurar relatório</h2>
+          <p class="leg">Defina o recorte e os indicadores para a exportação.</p>
+          <label>Território<select id="f-terr"><option>TI Rio Verde</option></select></label>
+          <label>Comunidade<select id="f-com">
+            <option value="todas">Todas as comunidades (4)</option><option>Aldeia Nova</option><option>Boa Esperança</option><option>Água Clara</option><option>São Miguel</option></select></label>
+          <label>Período<select id="f-per"><option>Janeiro a junho de 2026</option></select></label>
+
+          <div class="sec-t"><b>Indicadores do relatório</b><span id="cont"></span></div>
+          <div class="grupo">Ecológicos <small id="grupo"></small></div>
+          <div class="ck">
+            <label><input type="checkbox" id="i-cobertura" checked> Cobertura territorial monitorada</label>
+            <label><input type="checkbox" id="i-agua" checked> Pontos de água monitorados</label>
+            <label><input type="checkbox" id="i-areas" checked> Áreas em recuperação</label>
+            <label><input type="checkbox" id="i-rondas" checked> Rondas de vigilância territorial</label>
+          </div>
+          <p class="leg">Outras dimensões podem ser incluídas em novos relatórios.</p>
+
+          <div class="sec-t"><b>Formato de saída</b></div>
+          <div class="fmt">
+            <label><input type="radio" name="fmt" value="pdf" checked><span><b>PDF</b><small>Documento A4</small></span></label>
+            <label><input type="radio" name="fmt" value="csv"><span><b>CSV</b><small>Planilha de dados</small></span></label>
+          </div>
+          <div class="aviso">Relatório demonstrativo. Os dados são fictícios e não possuem validade oficial.</div>
+          <div class="acao"><span id="resumo" class="leg" style="margin:0"></span><button class="botao gerar" type="button">Gerar relatório</button></div>
+        </section>
+
+        <section class="previa">
+          <div class="prev-cab"><div><h2>Prévia do relatório</h2><p class="leg" style="margin:0">Recorte aplicado · Janeiro a junho de 2026</p></div><span class="leg" style="margin:0"><b style="color:var(--verde);font-weight:500">● Atualizada</b> &nbsp; A4 · 1 página</span></div>
+          <div class="prev-box" id="prev-box"><div class="rel" id="rel"></div></div>
+          <p class="leg" id="rod-prev" style="margin:14px 0 0"></p>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:24px">
+        <h2>Histórico de relatórios</h2>
+        <p class="leg">Documentos gerados para a TI Rio Verde · disponíveis para consulta e download</p>
+        <div class="rolagem"><table>
+          <thead><tr><th>Nome</th><th>Período</th><th>Data</th><th>Formato</th><th>Ações</th></tr></thead>
+          <tbody id="hist"></tbody>
+        </table></div>
+      </section>
+
+      <p class="rodape">Exportações respeitam os filtros e indicadores selecionados.<br><br>Atualizado em 30/06/2026 · 17:30</p>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" hidden role="status"><span></span><button type="button" aria-label="Fechar">✕</button></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="relatorios.js"></script>
+</body>
+</html>
