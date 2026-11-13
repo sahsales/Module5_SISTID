@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indicadores e metas · SISTID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="menu">
+    <a class="logo" href="index.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
+    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
+    <nav>
+      <a href="#">Painel Principal</a>
+      <a href="#">Base Territorial</a>
+      <a href="#">Governança</a>
+      <a href="#">Etnozoneamento</a>
+      <a href="#">Formação</a>
+      <a href="#">Pesquisa e Dados</a>
+      <a href="index.html" class="ativo">Monitoramento</a>
+      <a href="index.html" class="sub">Visão geral</a>
+      <a href="indicadores.html" class="sub ativo">Indicadores e metas</a>
+      <a href="relatorios.html" class="sub">Relatórios</a>
+      <a href="#">Comunicação</a>
+      <a href="#">Gestão Documental</a>
+      <a href="#">Administração</a>
+    </nav>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+  </aside>
+  <div>
+    <header class="topo">
+      <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Indicadores e metas</span></div>
+      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+    </header>
+
+    <main>
+      <div class="cabeca">
+        <div>
+          <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
+          <h1>Indicadores e metas.</h1>
+          <p>Monitore metas pactuadas, acompanhe resultados e identifique prioridades de atuação.</p>
+        </div>
+        <button class="botao" type="button">Exportar indicadores</button>
+      </div>
+
+      <div class="abas" role="tablist">
+        <button class="ativa" type="button">Ecológicos</button>
+        <button type="button">Econômicos</button>
+        <button type="button">Sociais</button>
+        <button type="button">Governança</button>
+        <button type="button">Políticas públicas</button>
+      </div>
+
+      <section class="card filtros" aria-label="Filtros">
+        <label>Território<select><option>Rio Verde</option></select></label>
+        <label>Comunidades<select><option>Todas as comunidades (4)</option></select></label>
+        <label>Período<select><option>Janeiro a junho de 2026</option></select></label>
+        <button type="button">Filtros</button>
+      </section>
+
+      <section class="kpis4">
+        <div class="card"><div><small>Total de indicadores</small><strong>4</strong></div><i class="ico">≡</i><span>Dimensão ecológica</span></div>
+        <div class="card"><div><small>Em dia</small><strong>1</strong></div><i class="ico ok">✓</i><span>25% dos indicadores</span></div>
+        <div class="card"><div><small>Em atenção</small><strong>2</strong></div><i class="ico at">◷</i><span>50% dos indicadores</span></div>
+        <div class="card"><div><small>Atrasados</small><strong>1</strong></div><i class="ico ra">!</i><span>25% dos indicadores</span></div>
+      </section>
+
+      <section class="card tabela-card">
+        <div class="ferramentas">
+          <input type="search" placeholder="Buscar indicador..." aria-label="Buscar indicador" id="busca">
+          <div class="chips">Status:
+            <span class="badge baixa">● Em dia</span><span class="badge media">● Em atenção</span><span class="badge alta">● Atrasado</span>
+          </div>
+        </div>
+        <div class="rolagem">
+          <table>
+            <thead><tr><th>Indicador</th><th>Meta</th><th>Resultado</th><th>Progresso</th><th>Status</th><th>Última atualização</th><th></th></tr></thead>
+            <tbody id="linhas">
+              <tr class="sel"><td><b>Cobertura territorial monitorada</b><small>Selecionado · Ecológicos · Rio Verde</small></td><td>90%</td><td>72%</td><td><div class="prog"><i style="--p:80%"></i>80%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr><td><b>Pontos de água monitorados</b><small>Ecológicos · TI Rio Verde</small></td><td>12 pontos</td><td>12 pontos</td><td><div class="prog"><i style="--p:100%"></i>100%</div></td><td><span class="badge baixa" style="margin:0">● Em dia</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr><td><b>Áreas em recuperação</b><small>Ecológicos · TI Rio Verde</small></td><td>50 ha</td><td>35 ha</td><td><div class="prog"><i style="--p:70%"></i>70%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>29/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+              <tr><td><b>Rondas de vigilância territorial</b><small>Ecológicos · TI Rio Verde</small></td><td>24 rondas</td><td>16 rondas</td><td><div class="prog"><i style="--p:67%"></i>67%</div></td><td><span class="badge alta" style="margin:0">● Atrasado</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rodape-tab"><span>Exibindo 1–4 de 4 indicadores · Metas para o 1º semestre de 2026</span><span class="pag">‹ <span class="atual-pg">1</span> ›</span></div>
+      </section>
+
+      <section class="card" id="painel">
+        <h2>Cobertura territorial monitorada</h2>
+        <p class="leg">PAINEL DO INDICADOR SELECIONADO · Ecológicos · Rio Verde</p>
+        <div class="painel">
+          <div>
+            <p class="desc">Percentual da área do território com monitoramento atualizado. A apuração considera registros validados pelas equipes de campo e pelas comunidades.</p>
+            <div class="mini">
+              <div><small>Meta semestral</small><strong>90%</strong></div>
+              <div><small>Resultado atual</small><strong>72%</strong></div>
+              <div><small>Alcance da meta</small><strong>80%</strong></div>
+            </div>
+            <span class="badge media" style="margin:0">● Em atenção</span>
+          </div>
+          <div>
+            <h3>Evolução da cobertura territorial (%)</h3>
+            <svg viewBox="0 0 580 200" role="img" aria-label="Cobertura territorial de janeiro a junho, de 64% a 72%, contra meta de 90%">
+              <g stroke="#E4E9EB"><path d="M40 20H560M40 66.7H560M40 113.3H560M40 160H560"/></g>
+              <g text-anchor="end"><text x="30" y="24">100</text><text x="30" y="70">75</text><text x="30" y="117">50</text><text x="30" y="164">25</text></g>
+              <g text-anchor="middle"><text x="40" y="185">Jan</text><text x="140" y="185">Fev</text><text x="240" y="185">Mar</text><text x="340" y="185">Abr</text><text x="440" y="185">Mai</text><text x="540" y="185">Jun</text></g>
+              <path d="M40 38.7H540" stroke="#D7B548" stroke-width="2" stroke-dasharray="6 4"/>
+              <polyline points="40,86.8 140,83.1 240,79.3 340,75.6 440,73.7 540,71.9" fill="none" stroke="#155344" stroke-width="2.5"/>
+              <g fill="#155344"><circle cx="40" cy="86.8" r="3"/><circle cx="140" cy="83.1" r="3"/><circle cx="240" cy="79.3" r="3"/><circle cx="340" cy="75.6" r="3"/><circle cx="440" cy="73.7" r="3"/><circle cx="540" cy="71.9" r="3"/></g>
+            </svg>
+            <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i>Cobertura (%)</span><span><i class="pt" style="background:var(--ouro)"></i>Meta: 90%</span></div>
+            <p class="leg" style="margin-top:8px">Jan 64% · Fev 66% · Mar 68% · Abr 70% · Mai 71% · Jun 72%</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="rodape">Atualizado em 30/06/2026 · 17:30</p>
+    </main>
+  </div>
+
+  <script>
+    // Busca simples: esconde as linhas que não contêm o texto digitado
+    document.getElementById("busca").addEventListener("input", function (e) {
+      var termo = e.target.value.toLowerCase();
+      document.querySelectorAll("#linhas tr").forEach(function (tr) {
+        tr.hidden = tr.textContent.toLowerCase().indexOf(termo) === -1;
+      });
+    });
+  </script>
+</body>
+</html>
