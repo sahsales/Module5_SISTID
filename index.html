@@ -28,23 +28,24 @@
       <a href="#">Gestão Documental</a>
       <a href="#">Administração</a>
     </nav>
-    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small></div>
   </aside>
 
   <div>
     <header class="topo">
       <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Visão geral</span></div>
-      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+      <div><span class="avatar">AC</span></div>
     </header>
 
     <main>
+      <div class="so-print"><img src="logo-sistid.png" alt=""><div><b>Resumo · Visão geral</b><span data-gerado></span></div></div>
       <div class="cabeca">
         <div>
           <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
           <h1>Visão geral.</h1>
           <p>Acompanhe os resultados, as ações e os sinais de atenção do território.</p>
         </div>
-        <button class="botao" type="button">Exportar resumo</button>
+        <button class="botao" type="button" data-exportar="resumo-visao-geral" data-sem-print>Exportar resumo</button>
       </div>
 
       <section class="card filtros" aria-label="Filtros">
@@ -94,19 +95,21 @@
           <div class="duplo">
             <svg viewBox="0 0 120 120" width="180" role="img" aria-label="240 registros validados por fonte">
               <g fill="none" stroke-width="14" transform="rotate(-90 60 60)">
-                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#155344" stroke-dasharray="45 55"/>
-                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#559C85" stroke-dasharray="30 70" stroke-dashoffset="-45"/>
-                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#D7B548" stroke-dasharray="20 80" stroke-dashoffset="-75"/>
-                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#78878A" stroke-dasharray="5 95" stroke-dashoffset="-95"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#155344" stroke-dasharray="10 90"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#559C85" stroke-dasharray="20 80" stroke-dashoffset="-10"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#D7B548" stroke-dasharray="10 90" stroke-dashoffset="-30"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#78878A" stroke-dasharray="20 80" stroke-dashoffset="-40"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#A7C2B7" stroke-dasharray="40 60" stroke-dashoffset="-60"/>
               </g>
               <text x="60" y="64" text-anchor="middle" style="font-size:20px;font-weight:500;fill:#1C2B2A">240</text>
               <text x="60" y="76" text-anchor="middle" style="font-size:6px">registros validados</text>
             </svg>
             <div class="fontes">
-              <p><span><i class="pt" style="background:#155344"></i>Registros comunitários<small>108 registros</small></span><b>45%</b></p>
-              <p><span><i class="pt" style="background:#559C85"></i>Equipes de campo<small>72 registros</small></span><b>30%</b></p>
-              <p><span><i class="pt" style="background:#D7B548"></i>Sensoriamento remoto<small>48 registros</small></span><b>20%</b></p>
-              <p><span><i class="pt" style="background:#78878A"></i>Bases institucionais<small>12 registros</small></span><b>5%</b></p>
+              <p><span><i class="pt" style="background:#155344"></i>IBGE<small>24 registros</small></span><b>10%</b></p>
+              <p><span><i class="pt" style="background:#559C85"></i>INPE<small>48 registros</small></span><b>20%</b></p>
+              <p><span><i class="pt" style="background:#D7B548"></i>INMET<small>24 registros</small></span><b>10%</b></p>
+              <p><span><i class="pt" style="background:#78878A"></i>MapBiomas<small>48 registros</small></span><b>20%</b></p>
+              <p><span><i class="pt" style="background:#A7C2B7"></i>FUNAI<small>96 registros</small></span><b>40%</b></p>
             </div>
           </div>
         </div>
@@ -140,8 +143,12 @@
         <div class="alerta"><div><b>Consolidação dos registros de campo</b><small>Validação complementar de 12 registros · Água Clara · Responsável: equipe de dados</small></div><div>28 jun 2026<span class="badge baixa">● Baixa</span><a href="#">Ver alerta →</a></div></div>
       </section>
 
-      <p class="rodape">Atualizado em 30/06/2026 · 17:30</p>
+      <p class="rodape" data-sync></p>
     </main>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="exportar.js"></script>
+  <script src="sync.js"></script>
 </body>
 </html>

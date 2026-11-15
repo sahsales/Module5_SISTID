@@ -45,7 +45,6 @@ a { color: inherit; text-decoration: none; }
   background: #fff; padding: 18px 32px; border-bottom: 1px solid var(--borda);
 }
 .topo .atual { font-weight: 600; }
-.selo { background: var(--fundo); color: var(--verde); border-radius: 99px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
 .avatar { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ouro); font-size: 11px; font-weight: 700; margin-left: 12px; }
 main { padding: 28px 32px 40px; }
 .cabeca { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
@@ -175,7 +174,6 @@ input[type=checkbox], input[type=radio] { accent-color: var(--verde); width: 16p
 .campos .fmt label { display: flex; gap: 10px; margin: 0; padding: 14px; color: var(--texto); border: 1px solid var(--borda); border-radius: 6px; cursor: pointer; }
 .fmt label:has(input:checked) { border-color: var(--verde); background: #E8F2ED; }
 .fmt span b { display: block; font-size: 13px; } .fmt small { color: var(--cinza); font-size: 11px; }
-.aviso { background: #FCF5DD; color: var(--ouro-esc); border-radius: 6px; padding: 12px; font-size: 12px; margin: 20px 0; }
 .acao { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .botao:disabled { opacity: .45; cursor: not-allowed; }
 
@@ -215,3 +213,9 @@ input[type=checkbox], input[type=radio] { accent-color: var(--verde); width: 16p
 .toast { position: fixed; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 18px; background: #fff; border: 1px solid var(--borda); border-radius: 6px; padding: 12px 16px; box-shadow: 0 4px 14px rgba(0,0,0,.12); z-index: 5; }
 .toast[hidden] { display: none; } .toast button { background: none; border: 0; cursor: pointer; color: var(--cinza); }
 @media (max-width: 1150px) { .rel-grade { grid-template-columns: 1fr; } }
+
+/* ---- Resumo exportado: faixa com a logo que só aparece no PDF ---- */
+.so-print { display: none; }
+.so-print.on { display: flex; align-items: center; justify-content: space-between; background: var(--verde-escuro); color: #fff; margin: -28px -32px 24px; padding: 18px 32px; }
+.so-print img { height: 46px; width: auto; }
+.so-print div { text-align: right; } .so-print b { display: block; font-size: 15px; } .so-print span { font-size: 12px; opacity: .75; }

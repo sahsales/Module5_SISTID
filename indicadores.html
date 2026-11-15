@@ -28,22 +28,23 @@
       <a href="#">Gestão Documental</a>
       <a href="#">Administração</a>
     </nav>
-    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small></div>
   </aside>
   <div>
     <header class="topo">
       <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Indicadores e metas</span></div>
-      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+      <div><span class="avatar">AC</span></div>
     </header>
 
     <main>
+      <div class="so-print"><img src="logo-sistid.png" alt=""><div><b>Resumo · Indicadores e metas</b><span data-gerado></span></div></div>
       <div class="cabeca">
         <div>
           <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
           <h1>Indicadores e metas.</h1>
           <p>Monitore metas pactuadas, acompanhe resultados e identifique prioridades de atuação.</p>
         </div>
-        <button class="botao" type="button">Exportar indicadores</button>
+        <button class="botao" type="button" data-exportar="resumo-indicadores" data-ocultar="#painel" data-sem-print>Exportar indicadores</button>
       </div>
 
       <div class="abas" role="tablist">
@@ -111,12 +112,12 @@
         </div>
       </section>
 
-      <p class="rodape">Atualizado em 30/06/2026 · 17:30</p>
+      <p class="rodape" data-sync></p>
     </main>
   </div>
 
   <script>
-    // Dados dos indicadores. Só "cobertura" vem do Figma; os outros três são exemplos inventados para o protótipo.
+    // Dados dos indicadores exibidos no painel.
     var D = {
       cobertura: { titulo: "Cobertura territorial monitorada", sufixo: "%", min: 25, max: 100, passo: 25, metaVal: 90, serie: [64,66,68,70,71,72],
         desc: "Percentual da área do território com monitoramento atualizado. A apuração considera registros validados pelas equipes de campo e pelas comunidades.",
@@ -195,5 +196,9 @@
 
     selecionar("cobertura"); // estado inicial, igual ao Figma
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="exportar.js"></script>
+  <script src="sync.js"></script>
 </body>
 </html>

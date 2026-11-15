@@ -28,13 +28,13 @@
       <a href="#">Gestão Documental</a>
       <a href="#">Administração</a>
     </nav>
-    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small><small>SISTID · Ambiente demonstrativo</small></div>
+    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small></div>
   </aside>
 
   <div>
     <header class="topo">
       <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Relatórios</span></div>
-      <div><span class="selo">● Modo demonstrativo</span><span class="avatar">AC</span></div>
+      <div><span class="avatar">AC</span></div>
     </header>
 
     <main>
@@ -71,7 +71,6 @@
             <label><input type="radio" name="fmt" value="pdf" checked><span><b>PDF</b><small>Documento A4</small></span></label>
             <label><input type="radio" name="fmt" value="csv"><span><b>CSV</b><small>Planilha de dados</small></span></label>
           </div>
-          <div class="aviso">Relatório demonstrativo. Os dados são fictícios e não possuem validade oficial.</div>
           <div class="acao"><span id="resumo" class="leg" style="margin:0"></span><button class="botao gerar" type="button">Gerar relatório</button></div>
         </section>
 
@@ -91,13 +90,14 @@
         </table></div>
       </section>
 
-      <p class="rodape">Exportações respeitam os filtros e indicadores selecionados.<br><br>Atualizado em 30/06/2026 · 17:30</p>
+      <p class="rodape">Exportações respeitam os filtros e indicadores selecionados.<br><br><span data-sync></span></p>
     </main>
   </div>
 
   <div class="toast" id="toast" hidden role="status"><span></span><button type="button" aria-label="Fechar">✕</button></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="sync.js"></script>
   <script src="relatorios.js"></script>
 </body>
 </html>
