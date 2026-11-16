@@ -64,7 +64,7 @@ h1 { font-size: 34px; font-weight: 400; margin: 6px 0; }
   background: #fff; border: 1px solid var(--borda); border-radius: 6px;
 }
 
-.kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .kpi { padding: 16px; }
 .kpi small { color: var(--cinza); font-size: 12px; }
 .kpi strong { display: block; font-size: 30px; font-weight: 600; margin: 10px 0 2px; }
@@ -99,7 +99,7 @@ svg text { font: 10px Inter, system-ui, sans-serif; fill: var(--cinza); }
 .rodape { color: var(--cinza); font-size: 12px; margin-top: 24px; }
 
 @media (max-width: 1100px) {
-  .kpis { grid-template-columns: repeat(3, 1fr); }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
   .grade { grid-template-columns: 1fr; }
 }
 @media (max-width: 800px) {
@@ -219,3 +219,24 @@ input[type=checkbox], input[type=radio] { accent-color: var(--verde); width: 16p
 .so-print.on { display: flex; align-items: center; justify-content: space-between; background: var(--verde-escuro); color: #fff; margin: -28px -32px 24px; padding: 18px 32px; }
 .so-print img { height: 46px; width: auto; }
 .so-print div { text-align: right; } .so-print b { display: block; font-size: 15px; } .so-print span { font-size: 12px; opacity: .75; }
+
+/* ---- Janela de detalhes do indicador ---- */
+dialog.janela { border: 0; border-radius: 12px; padding: 0; width: min(720px, calc(100% - 32px)); max-height: 90vh; color: var(--texto); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+dialog.janela::backdrop { background: rgba(16, 40, 34, .55); }
+.jan-int { padding: 24px 28px 28px; }
+.jan-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.jan-cab h2 { font-size: 20px; font-weight: 500; margin: 8px 0 0; }
+.jan-x { background: none; border: 0; font-size: 18px; cursor: pointer; color: var(--cinza); padding: 4px; }
+.jan-sec { margin-top: 22px; }
+.jan-sec h3 { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cinza); margin: 0 0 8px; }
+.jan-sec p { margin: 0; }
+.jan-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.jan-caixa { background: #F4F7F8; border-radius: 8px; padding: 14px 16px; }
+.jan-caixa strong { display: block; font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+.jan-caixa span { color: var(--cinza); font-size: 12px; }
+.jan-obs { border-left: 3px solid var(--ouro); background: #FCF5DD; padding: 12px 14px; border-radius: 0 6px 6px 0; }
+.jan-rod { display: flex; justify-content: flex-end; margin-top: 24px; }
+@media (max-width: 600px) { .jan-duo { grid-template-columns: 1fr; } }
+
+.abas button { white-space: nowrap; }
+.abas { overflow-x: auto; }

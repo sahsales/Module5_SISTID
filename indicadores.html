@@ -48,11 +48,11 @@
       </div>
 
       <div class="abas" role="tablist">
-        <button class="ativa" type="button">Ecológicos</button>
-        <button type="button">Econômicos</button>
-        <button type="button">Sociais</button>
-        <button type="button">Governança</button>
-        <button type="button">Políticas públicas</button>
+        <button class="ativa" type="button" data-cat="gat">Gestão Ambiental e Territorial</button>
+        <button type="button" data-cat="eco">Econômico</button>
+        <button type="button" data-cat="soc">Social, Saúde e Educação</button>
+        <button type="button" data-cat="gov">Governança Territorial</button>
+        <button type="button" data-cat="pol">Políticas Públicas</button>
       </div>
 
       <section class="card filtros" aria-label="Filtros">
@@ -63,10 +63,10 @@
       </section>
 
       <section class="kpis4">
-        <div class="card"><div><small>Total de indicadores</small><strong>4</strong></div><i class="ico">≡</i><span>Dimensão ecológica</span></div>
-        <div class="card"><div><small>Em dia</small><strong>1</strong></div><i class="ico ok">✓</i><span>25% dos indicadores</span></div>
-        <div class="card"><div><small>Em atenção</small><strong>2</strong></div><i class="ico at">◷</i><span>50% dos indicadores</span></div>
-        <div class="card"><div><small>Atrasados</small><strong>1</strong></div><i class="ico ra">!</i><span>25% dos indicadores</span></div>
+        <div class="card"><div><small>Indicadores monitorados</small><strong id="k-total"></strong></div><i class="ico">≡</i><span id="k-cat"></span></div>
+        <div class="card"><div><small>Metas em dia</small><strong id="k-dia"></strong></div><i class="ico ok">✓</i><span id="k-dia-p"></span></div>
+        <div class="card"><div><small>Metas em atenção</small><strong id="k-atencao"></strong></div><i class="ico at">◷</i><span id="k-atencao-p"></span></div>
+        <div class="card"><div><small>Metas atrasadas</small><strong id="k-atrasado"></strong></div><i class="ico ra">!</i><span id="k-atrasado-p"></span></div>
       </section>
 
       <section class="card tabela-card">
@@ -79,15 +79,10 @@
         <div class="rolagem">
           <table>
             <thead><tr><th>Indicador</th><th>Meta</th><th>Resultado</th><th>Progresso</th><th>Status</th><th>Última atualização</th><th></th></tr></thead>
-            <tbody id="linhas">
-              <tr data-id="cobertura" tabindex="0"><td><b>Cobertura territorial monitorada</b><small></small></td><td>90%</td><td>72%</td><td><div class="prog"><i style="--p:80%"></i>80%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr data-id="agua" tabindex="0"><td><b>Pontos de água monitorados</b><small></small></td><td>12 pontos</td><td>12 pontos</td><td><div class="prog"><i style="--p:100%"></i>100%</div></td><td><span class="badge baixa" style="margin:0">● Em dia</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr data-id="areas" tabindex="0"><td><b>Áreas em recuperação</b><small></small></td><td>50 ha</td><td>35 ha</td><td><div class="prog"><i style="--p:70%"></i>70%</div></td><td><span class="badge media" style="margin:0">● Em atenção</span></td><td>29/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-              <tr data-id="rondas" tabindex="0"><td><b>Rondas de vigilância territorial</b><small></small></td><td>24 rondas</td><td>16 rondas</td><td><div class="prog"><i style="--p:67%"></i>67%</div></td><td><span class="badge alta" style="margin:0">● Atrasado</span></td><td>30/06/2026</td><td><a href="#painel"><b>Detalhes →</b></a></td></tr>
-            </tbody>
+            <tbody id="linhas"></tbody>
           </table>
         </div>
-        <div class="rodape-tab"><span>Exibindo 1–4 de 4 indicadores · Metas para o 1º semestre de 2026</span><span class="pag">‹ <span class="atual-pg">1</span> ›</span></div>
+        <div class="rodape-tab"><span id="r-tab"></span><span class="pag">‹ <span class="atual-pg">1</span> ›</span></div>
       </section>
 
       <section class="card" id="painel" aria-live="polite">
@@ -97,7 +92,7 @@
           <div>
             <p class="desc" id="p-desc"></p>
             <div class="mini">
-              <div><small>Meta semestral</small><strong id="p-meta"></strong></div>
+              <div><small id="p-metarot">Meta semestral</small><strong id="p-meta"></strong></div>
               <div><small>Resultado atual</small><strong id="p-res"></strong></div>
               <div><small>Alcance da meta</small><strong id="p-alc"></strong></div>
             </div>
@@ -116,8 +111,45 @@
     </main>
   </div>
 
+  <dialog class="janela" id="modal" aria-labelledby="m-titulo">
+    <div class="jan-int">
+      <div class="jan-cab">
+        <div><div class="modulo-etq">DETALHES DO INDICADOR</div><h2 id="m-titulo"></h2></div>
+        <div style="display:flex;align-items:center;gap:12px"><span class="badge" id="m-status" style="margin:0"></span><button type="button" class="jan-x" data-fechar aria-label="Fechar">✕</button></div>
+      </div>
+      <section class="jan-sec"><h3>Descrição do indicador</h3><p id="m-desc"></p></section>
+      <section class="jan-sec jan-duo">
+        <div class="jan-caixa"><h3>Meta estabelecida</h3><strong id="m-meta"></strong><span id="m-metatxt"></span></div>
+        <div class="jan-caixa"><h3>Resultado atual</h3><strong id="m-res"></strong><span id="m-restxt"></span></div>
+      </section>
+      <section class="jan-sec">
+        <h3>Histórico de resultados</h3>
+        <svg id="m-svg" viewBox="0 0 580 200" role="img" aria-label="Evolução mensal do indicador de janeiro a junho"></svg>
+        <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i><span id="m-leg1"></span></span><span><i class="pt" style="background:var(--ouro)"></i><span id="m-leg2"></span></span></div>
+        <p class="leg" id="m-serie" style="margin:8px 0 0;color:var(--cinza);font-size:12px"></p>
+      </section>
+      <section class="jan-sec jan-duo">
+        <div><h3>Responsável pela execução da meta</h3><p id="m-resp"></p></div>
+        <div><h3>Prazo</h3><p id="m-prazo"></p></div>
+      </section>
+      <section class="jan-sec"><h3>Observações</h3><p class="jan-obs" id="m-obs"></p></section>
+      <div class="jan-rod"><button type="button" class="botao" data-fechar>Fechar</button></div>
+    </div>
+  </dialog>
+
   <script>
-    // Dados dos indicadores exibidos no painel.
+    var fmtN = function (n) { return n.toLocaleString("pt-BR"); };
+
+    // Categorias e os indicadores de cada uma
+    var CATS = [
+      { id: "gat", nome: "Gestão Ambiental e Territorial", ind: ["cobertura", "agua", "areas", "rondas"] },
+      { id: "eco", nome: "Econômico", ind: ["familias", "faturamento"] },
+      { id: "soc", nome: "Social, Saúde e Educação", ind: ["saneamento", "alunos", "cursos"] },
+      { id: "gov", nome: "Governança Territorial", ind: ["reunioes"] },
+      { id: "pol", nome: "Políticas Públicas", ind: ["investimento", "beneficiarios"] }
+    ];
+
+    // Dados de cada indicador (tabela, painel e gráfico)
     var D = {
       cobertura: { titulo: "Cobertura territorial monitorada", sufixo: "%", min: 25, max: 100, passo: 25, metaVal: 90, serie: [64,66,68,70,71,72],
         desc: "Percentual da área do território com monitoramento atualizado. A apuração considera registros validados pelas equipes de campo e pelas comunidades.",
@@ -130,62 +162,171 @@
         meta: "50 ha", res: "35 ha", alc: "70%", cls: "media", st: "Em atenção", gt: "Evolução da área em recuperação (ha)", l1: "Área recuperada (ha)", l2: "Meta: 50 ha" },
       rondas: { titulo: "Rondas de vigilância territorial", sufixo: "", min: 0, max: 30, passo: 10, metaVal: 24, serie: [2,5,8,11,14,16],
         desc: "Número acumulado de rondas de vigilância concluídas pelas equipes de proteção no semestre.",
-        meta: "24 rondas", res: "16 rondas", alc: "67%", cls: "alta", st: "Atrasado", gt: "Evolução das rondas concluídas", l1: "Rondas concluídas", l2: "Meta: 24 rondas" }
+        meta: "24 rondas", res: "16 rondas", alc: "67%", cls: "alta", st: "Atrasado", gt: "Evolução das rondas concluídas", l1: "Rondas concluídas", l2: "Meta: 24 rondas" },
+
+      familias: { titulo: "Famílias produtoras", sufixo: "", min: 0, max: 150, passo: 50, metaVal: 120, serie: [70,76,82,88,93,96],
+        desc: "Número de famílias do território envolvidas em atividades produtivas, como agricultura, extrativismo e artesanato, com acompanhamento técnico.",
+        meta: "120 famílias", res: "96 famílias", alc: "80%", cls: "media", st: "Em atenção", gt: "Evolução das famílias produtoras", l1: "Famílias produtoras", l2: "Meta: 120 famílias" },
+      faturamento: { titulo: "Faturamento anual", rotMeta: "Meta anual", prefixo: "R$ ", sufixo: " mil", min: 0, max: 500, passo: 100, metaVal: 480, serie: [12,34,62,96,130,168],
+        desc: "Valor acumulado, em reais, da comercialização dos produtos das famílias e das associações do território ao longo do ano.",
+        meta: "R$ 480 mil", res: "R$ 168 mil", alc: "35%", cls: "alta", st: "Atrasado", gt: "Evolução do faturamento acumulado (R$ mil)", l1: "Faturamento acumulado (R$ mil)", l2: "Meta: R$ 480 mil" },
+
+      saneamento: { titulo: "Saneamento básico", sufixo: "%", min: 40, max: 100, passo: 20, metaVal: 85, serie: [62,66,70,73,76,78],
+        desc: "Percentual de domicílios do território com acesso adequado a água tratada e a destino seguro do esgoto.",
+        meta: "85%", res: "78%", alc: "92%", cls: "media", st: "Em atenção", gt: "Evolução do acesso a saneamento básico (%)", l1: "Domicílios atendidos (%)", l2: "Meta: 85%" },
+      alunos: { titulo: "Alunos em formação", sufixo: "", min: 0, max: 400, passo: 100, metaVal: 300, serie: [180,215,250,280,300,312],
+        desc: "Quantidade de alunos matriculados em cursos de formação oferecidos no território, incluindo educação escolar e formação técnica.",
+        meta: "300 alunos", res: "312 alunos", alc: "104%", cls: "baixa", st: "Em dia", gt: "Evolução dos alunos em formação", l1: "Alunos em formação", l2: "Meta: 300 alunos" },
+      cursos: { titulo: "Quantidade de cursos oferecidos", sufixo: "", min: 0, max: 15, passo: 5, metaVal: 12, serie: [1,2,4,5,6,7],
+        desc: "Número de cursos de formação oferecidos às comunidades no semestre, nas áreas de saúde, educação e formação técnica.",
+        meta: "12 cursos", res: "7 cursos", alc: "58%", cls: "alta", st: "Atrasado", gt: "Evolução dos cursos oferecidos", l1: "Cursos oferecidos", l2: "Meta: 12 cursos" },
+
+      reunioes: { titulo: "Reuniões comunitárias realizadas", sufixo: "", min: 0, max: 30, passo: 10, metaVal: 20, serie: [3,7,11,15,19,22],
+        desc: "Número de reuniões realizadas com as comunidades para discussão, planejamento e acompanhamento das ações do território.",
+        meta: "20 reuniões", res: "22 reuniões", alc: "110%", cls: "baixa", st: "Em dia", gt: "Evolução das reuniões realizadas", l1: "Reuniões realizadas", l2: "Meta: 20 reuniões" },
+
+      investimento: { titulo: "Investimento anual", rotMeta: "Meta anual", prefixo: "R$ ", sufixo: " mil", min: 0, max: 3000, passo: 1000, metaVal: 2400, serie: [120,260,480,700,890,1080],
+        desc: "Valor acumulado de recursos públicos investidos no território ao longo do ano, em áreas como saúde, educação, infraestrutura e produção.",
+        meta: "R$ 2,4 milhões", res: "R$ 1,08 milhão", alc: "45%", cls: "media", st: "Em atenção", gt: "Evolução do investimento acumulado (R$ mil)", l1: "Investimento acumulado (R$ mil)", l2: "Meta: R$ 2,4 milhões" },
+      beneficiarios: { titulo: "Beneficiários", sufixo: "", min: 0, max: 1500, passo: 500, metaVal: 1000, serie: [520,700,850,960,1060,1150],
+        desc: "Número de pessoas do território atendidas por programas e políticas públicas, como benefícios sociais, saúde e educação.",
+        meta: "1.000 pessoas", res: "1.150 pessoas", alc: "115%", cls: "baixa", st: "Em dia", gt: "Evolução dos beneficiários", l1: "Beneficiários", l2: "Meta: 1.000 pessoas" }
     };
+
+    // Informações exibidas na janela "Detalhes"
+    var DET = {
+      cobertura: { metaTxt: "Manter 90% da área do território com monitoramento atualizado.", atual: "30/06/2026", resp: "Mariana Tavares · Coordenação de Monitoramento Territorial", prazo: "30/06/2026",
+        obs: "Cobertura abaixo da meta por dificuldade de acesso a duas áreas durante o período de cheia. A retomada dos registros em campo está prevista para o próximo ciclo." },
+      agua: { metaTxt: "Monitorar os 12 pontos de água do território todos os meses.", atual: "30/06/2026", resp: "Carlos Mendes · Equipe de Recursos Hídricos", prazo: "30/06/2026",
+        obs: "Meta atingida. Todos os 12 pontos foram monitorados mensalmente, sem pendências." },
+      areas: { metaTxt: "Alcançar 50 hectares de áreas em processo de recuperação.", atual: "29/06/2026", resp: "Juliana Prado · Equipe Ambiental", prazo: "30/06/2026",
+        obs: "Recuperação abaixo do previsto por atraso na entrega de mudas e período de estiagem. Os 15 hectares restantes estão previstos para o próximo ciclo." },
+      rondas: { metaTxt: "Concluir 24 rondas de vigilância territorial no semestre.", atual: "30/06/2026", resp: "Roberto Alves · Equipe de Proteção Territorial", prazo: "30/06/2026",
+        obs: "Rondas atrasadas por limitação de equipe e condições climáticas. As 8 rondas pendentes serão reprogramadas com a equipe de proteção territorial." },
+      familias: { metaTxt: "Alcançar 120 famílias produtoras acompanhadas no território.", atual: "28/06/2026", resp: "Patrícia Lima · Equipe de Desenvolvimento Econômico", prazo: "30/06/2026",
+        obs: "Meta ainda não atingida: 24 famílias aguardam a conclusão do cadastro e da assistência técnica. A inclusão das famílias restantes está prevista para o próximo ciclo." },
+      faturamento: { metaTxt: "Atingir R$ 480 mil em faturamento acumulado até o fim de 2026.", atual: "30/06/2026", resp: "Rafael Nogueira · Associações e Cooperativas Produtivas", prazo: "31/12/2026",
+        obs: "Faturamento abaixo do ritmo necessário para fechar o ano na meta, por queda na safra e dificuldade de escoamento durante o período de cheia. Está em estudo um novo ponto de venda para o segundo semestre." },
+      saneamento: { metaTxt: "Chegar a 85% dos domicílios com saneamento básico adequado.", atual: "27/06/2026", resp: "Luciana Ferraz · Equipe de Saúde e Saneamento", prazo: "30/06/2026",
+        obs: "Obras de abastecimento de água concluídas em três comunidades. A comunidade restante depende da liberação de materiais para finalizar a rede." },
+      alunos: { metaTxt: "Manter 300 alunos em formação no território.", atual: "30/06/2026", resp: "Helena Barros · Coordenação de Formação", prazo: "30/06/2026",
+        obs: "Meta superada com a abertura de turmas extras. Não há pendências para o período." },
+      cursos: { metaTxt: "Oferecer 12 cursos de formação às comunidades no semestre.", atual: "29/06/2026", resp: "Marcos Teixeira · Equipe de Educação e Formação", prazo: "30/06/2026",
+        obs: "Cursos atrasados por falta de instrutores e pela dificuldade de deslocamento das equipes. Cinco cursos serão reprogramados para o próximo ciclo." },
+      reunioes: { metaTxt: "Realizar 20 reuniões com as comunidades no semestre.", atual: "30/06/2026", resp: "Sônia Oliveira · Equipe de Governança e Articulação", prazo: "30/06/2026",
+        obs: "Meta superada. As reuniões extras trataram do planejamento das ações do próximo ciclo, e não há pendências." },
+      investimento: { metaTxt: "Alcançar R$ 2,4 milhões em investimentos públicos no território em 2026.", atual: "26/06/2026", resp: "André Cardoso · Articulação de Políticas Públicas", prazo: "31/12/2026",
+        obs: "Execução um pouco abaixo do esperado para o período, por atraso na liberação de parte dos repasses. A previsão é regularizar a execução no próximo trimestre." },
+      beneficiarios: { metaTxt: "Atender 1.000 pessoas do território com programas e políticas públicas.", atual: "30/06/2026", resp: "Beatriz Souza · Equipe de Acesso a Direitos", prazo: "30/06/2026",
+        obs: "Meta superada com a ampliação do cadastro em benefícios sociais. Não há pendências." }
+    };
+
     var meses = ["Jan","Fev","Mar","Abr","Mai","Jun"];
-    var linhas = document.querySelectorAll("#linhas tr");
     var painel = document.getElementById("painel");
-    var atual = null;
+    var modal = document.getElementById("modal");
+    var tbody = document.getElementById("linhas");
+    var cat = null, linhas = [], atual = null;
 
+    function t(id, txt) { document.getElementById(id).textContent = txt; }
     function y(d, v) { return 160 - (v - d.min) / (d.max - d.min) * 140; }
+    function serie(d) { return d.serie.map(function (n, k) { return meses[k] + " " + (d.prefixo || "") + fmtN(n) + d.sufixo; }).join(" · "); }
 
-    function desenhar(d) {
-      var s = "<g stroke='#E4E9EB'>", t = "<g text-anchor='end'>", i, v;
+    function desenhar(d, alvo) {
+      var s = "<g stroke='#E4E9EB'>", tx = "<g text-anchor='end'>", i, v;
       for (v = d.min; v <= d.max; v += d.passo) {
         s += "<path d='M40 " + y(d, v).toFixed(1) + "H560'/>";
-        t += "<text x='30' y='" + (y(d, v) + 4).toFixed(1) + "'>" + v + "</text>";
+        tx += "<text x='30' y='" + (y(d, v) + 4).toFixed(1) + "'>" + fmtN(v) + "</text>";
       }
-      s += "</g>" + t + "</g><g text-anchor='middle'>";
+      s += "</g>" + tx + "</g><g text-anchor='middle'>";
       for (i = 0; i < 6; i++) s += "<text x='" + (40 + i * 100) + "' y='185'>" + meses[i] + "</text>";
       s += "</g><path d='M40 " + y(d, d.metaVal).toFixed(1) + "H540' stroke='#D7B548' stroke-width='2' stroke-dasharray='6 4'/>";
       var pts = d.serie.map(function (n, k) { return (40 + k * 100) + "," + y(d, n).toFixed(1); });
       s += "<polyline points='" + pts.join(" ") + "' fill='none' stroke='#155344' stroke-width='2.5'/><g fill='#155344'>";
       pts.forEach(function (p) { var c = p.split(","); s += "<circle cx='" + c[0] + "' cy='" + c[1] + "' r='3'/>"; });
-      document.getElementById("p-svg").innerHTML = s + "</g>";
+      document.getElementById(alvo || "p-svg").innerHTML = s + "</g>";
     }
 
     function mostrar(id) {
       var d = D[id];
-      document.getElementById("p-titulo").textContent = d.titulo;
-      document.getElementById("p-sub").textContent = "PAINEL DO INDICADOR SELECIONADO · Ecológicos · Rio Verde";
-      document.getElementById("p-desc").textContent = d.desc;
-      document.getElementById("p-meta").textContent = d.meta;
-      document.getElementById("p-res").textContent = d.res;
-      document.getElementById("p-alc").textContent = d.alc;
+      t("p-titulo", d.titulo);
+      t("p-sub", "PAINEL DO INDICADOR SELECIONADO · " + cat.nome + " · Rio Verde");
+      t("p-desc", d.desc);
+      t("p-metarot", d.rotMeta || "Meta semestral");
+      t("p-meta", d.meta); t("p-res", d.res); t("p-alc", d.alc);
       var st = document.getElementById("p-status");
       st.className = "badge " + d.cls; st.textContent = "● " + d.st;
-      document.getElementById("p-gtitulo").textContent = d.gt;
-      document.getElementById("p-leg1").textContent = d.l1;
-      document.getElementById("p-leg2").textContent = d.l2;
-      document.getElementById("p-serie").textContent = d.serie.map(function (n, k) { return meses[k] + " " + n + d.sufixo; }).join(" · ");
+      t("p-gtitulo", d.gt); t("p-leg1", d.l1); t("p-leg2", d.l2); t("p-serie", serie(d));
       desenhar(d);
     }
 
     function selecionar(id) {
-      if (atual === id) { atual = null; } else { atual = id; }
+      atual = atual === id ? null : id;
       linhas.forEach(function (tr) {
         var sel = tr.dataset.id === atual;
         tr.classList.toggle("sel", sel);
         tr.setAttribute("aria-selected", sel);
-        tr.querySelector("small").textContent = sel ? "Selecionado · Ecológicos · Rio Verde" : "Ecológicos · TI Rio Verde";
+        tr.querySelector("small").textContent = sel ? "Selecionado · " + cat.nome + " · Rio Verde" : cat.nome + " · TI Rio Verde";
       });
       painel.hidden = !atual;
       if (atual) mostrar(atual);
     }
 
-    linhas.forEach(function (tr) {
-      tr.addEventListener("click", function (e) { if (e.target.closest("a")) e.preventDefault(); selecionar(tr.dataset.id); });
-      tr.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selecionar(tr.dataset.id); } });
+    function linhaHtml(id) {
+      var d = D[id], a = parseInt(d.alc, 10);
+      return '<tr data-id="' + id + '" tabindex="0"><td><b>' + d.titulo + '</b><small></small></td><td>' + d.meta + '</td><td>' + d.res +
+        '</td><td><div class="prog"><i style="--p:' + Math.min(a, 100) + '%"></i>' + d.alc + '</div></td><td><span class="badge ' + d.cls + '" style="margin:0">● ' + d.st +
+        '</span></td><td>' + DET[id].atual + '</td><td><button type="button" class="lnk" data-detalhes>Detalhes →</button></td></tr>';
+    }
+
+    // Troca de categoria: refaz os cards, a tabela e o painel
+    function renderCat(cid) {
+      cat = CATS.filter(function (c) { return c.id === cid; })[0];
+      document.querySelectorAll(".abas button").forEach(function (b) { b.classList.toggle("ativa", b.dataset.cat === cid); });
+      var n = cat.ind.length, c = { baixa: 0, media: 0, alta: 0 };
+      cat.ind.forEach(function (i) { c[D[i].cls]++; });
+      t("k-total", n); t("k-cat", cat.nome);
+      [["dia", "baixa"], ["atencao", "media"], ["atrasado", "alta"]].forEach(function (p) {
+        t("k-" + p[0], c[p[1]]); t("k-" + p[0] + "-p", Math.round(c[p[1]] / n * 100) + "% dos indicadores");
+      });
+      tbody.innerHTML = cat.ind.map(function (i) { return linhaHtml(i); }).join("");
+      linhas = tbody.querySelectorAll("tr");
+      t("r-tab", "Exibindo 1–" + n + " de " + n + (n === 1 ? " indicador" : " indicadores") + " · Metas pactuadas para 2026");
+      document.getElementById("busca").value = "";
+      atual = null;
+      selecionar(cat.ind[0]); // o primeiro indicador já vem selecionado, como no Figma
+    }
+
+    // Janela de detalhes
+    function abrir(id) {
+      var d = D[id], x = DET[id];
+      t("m-titulo", d.titulo); t("m-desc", d.desc);
+      t("m-meta", d.meta); t("m-metatxt", x.metaTxt);
+      t("m-res", d.res); t("m-restxt", d.alc + " da meta · atualizado em " + x.atual);
+      t("m-leg1", d.l1); t("m-leg2", d.l2); t("m-serie", serie(d));
+      t("m-resp", x.resp); t("m-prazo", x.prazo); t("m-obs", x.obs);
+      var st = document.getElementById("m-status");
+      st.className = "badge " + d.cls; st.textContent = "● " + d.st;
+      desenhar(d, "m-svg");
+      modal.showModal();
+    }
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal || e.target.closest("[data-fechar]")) modal.close();
+    });
+
+    tbody.addEventListener("click", function (e) {
+      var tr = e.target.closest("tr"); if (!tr) return;
+      var id = tr.dataset.id;
+      if (e.target.closest("[data-detalhes]")) { if (atual !== id) selecionar(id); abrir(id); return; }
+      selecionar(id);
+    });
+    tbody.addEventListener("keydown", function (e) {
+      var tr = e.target.closest("tr");
+      if (!tr || e.target !== tr) return;
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selecionar(tr.dataset.id); }
+    });
+    document.querySelector(".abas").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-cat]");
+      if (b) renderCat(b.dataset.cat);
     });
 
     // Busca simples: esconde as linhas que não contêm o texto digitado
@@ -194,8 +335,9 @@
       linhas.forEach(function (tr) { tr.hidden = tr.textContent.toLowerCase().indexOf(termo) === -1; });
     });
 
-    selecionar("cobertura"); // estado inicial, igual ao Figma
+    renderCat("gat");
   </script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="exportar.js"></script>

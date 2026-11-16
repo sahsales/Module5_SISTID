@@ -38,7 +38,7 @@
       if (c[k]) partes.push(n === 1 ? SG[k] : NUM[c[k]] + " " + (c[k] === 1 ? SG[k] : PL[k]));
     });
     var foco = ord.filter(function (i) { return i.foco; }).map(function (i) { return i.foco; });
-    var p2 = n ? (n > 1 ? "Entre os " + NUM[n] + " indicadores ecológicos selecionados, " : "O indicador ecológico selecionado ") + lista(partes) + "." : "";
+    var p2 = n ? (n > 1 ? "Entre os " + NUM[n] + " indicadores de Gestão Ambiental e Territorial selecionados, " : "O indicador de Gestão Ambiental e Territorial selecionado ") + lista(partes) + "." : "";
     if (foco.length) p2 += (foco.length > 1 ? " As prioridades são " : " A prioridade é ") + lista(foco) + ".";
     var ids = cfg.ids, pr = [];
     ord.forEach(function (i) {
@@ -67,7 +67,7 @@
       '<p class="r-et">RELATÓRIO SEMESTRAL · 2026</p><h1>Monitoramento e avaliação territorial.</h1><p class="r-sub">' + m.sub + "</p>" +
       '<div class="r-met"><span>Período: 01/01/2026 a 30/06/2026</span><span>Emitido em: ' + m.emit + '</span></div><p class="r-com">Comunidades: ' + m.comLinha + "</p>" +
       "<h2>1. Síntese do período</h2><p>" + m.p1 + "</p>" + (m.p2 ? "<p>" + m.p2 + "</p>" : "") + '<div class="r-ks">' + kp + "</div>" +
-      "<h2>2. Resultados dos indicadores ecológicos</h2>" +
+      "<h2>2. Resultados dos indicadores de Gestão Ambiental e Territorial</h2>" +
       '<div class="r-l r-h"><span>Indicador</span><span>Meta</span><span>Resultado</span><span>Alcance¹</span><span>Status</span></div>' + linhas +
       '<p class="r-nota">¹ Alcance = resultado ÷ meta × 100, arredondado. Atualização: 30/06/2026.</p>' +
       "<h2>3. Prioridades para o próximo ciclo</h2><ul>" + m.pr.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" +
@@ -111,7 +111,7 @@
       rc(d, x, y, 166, 76, k[2], "#E4E9EB"); tx(d, String(k[1]), x + 12, y + 36, 24, G, 1); tx(d, k[0], x + 12, y + 58, 10, CZ);
     });
     y += 118;
-    tx(d, "2. Resultados dos indicadores ecológicos", 48, y, 17, G, 1); y += 18;
+    tx(d, "2. Resultados dos indicadores de Gestão Ambiental e Territorial", 48, y, 17, G, 1); y += 18;
     rc(d, 48, y, 698, 40, "#E8F2ED");
     [["Indicador", 58], ["Meta", 286], ["Resultado", 376], ["Alcance¹", 466], ["Status", 546]].forEach(function (h) { tx(d, h[0], h[1], y + 24, 9, G, 1); });
     y += 40;
@@ -196,7 +196,7 @@
     b.addEventListener("click", function () {
       var cfg = lerCfg();
       if (!baixar(cfg)) return;
-      HIST.unshift({ nome: "Relatório semestral · Indicadores ecológicos" + (cfg.com === "todas" ? "" : " · " + cfg.com), sub: "TI Rio Verde · " + cfg.ids.length + (cfg.ids.length === 1 ? " indicador" : " indicadores") + " · Ana Costa", per: "Jan – jun 2026", data: cfg.emit, fmt: cfg.fmt, cfg: cfg });
+      HIST.unshift({ nome: "Relatório semestral · Gestão Ambiental e Territorial" + (cfg.com === "todas" ? "" : " · " + cfg.com), sub: "TI Rio Verde · " + cfg.ids.length + (cfg.ids.length === 1 ? " indicador" : " indicadores") + " · Ana Costa", per: "Jan – jun 2026", data: cfg.emit, fmt: cfg.fmt, cfg: cfg });
       guardarHist(); hist(); atualizar();
       if (window.sincronizar) window.sincronizar();
       toast("Relatório gerado e baixado.");
