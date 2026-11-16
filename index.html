@@ -59,7 +59,7 @@
         <div class="card kpi"><small>Territórios acompanhados</small><strong>1</strong><span>4 comunidades acompanhadas</span><a href="#">Ver detalhes →</a></div>
         <div class="card kpi"><small>População abrangida</small><strong>1.280</strong><span>Pessoas no território</span><a href="#">Ver detalhes →</a></div>
         <div class="card kpi"><small>Ações realizadas</small><strong>128</strong><span>85% da meta de 150 ações</span><a href="#">Ver detalhes →</a></div>
-        <div class="card kpi"><small>Metas em andamento</small><strong>8</strong><span>de 12 metas monitoradas</span><a href="indicadores.html">Ver detalhes →</a></div>
+        <div class="card kpi"><small>Metas em andamento</small><strong id="k-metas-and">8</strong><span id="k-metas-tot">de 12 metas monitoradas</span><a href="indicadores.html">Ver detalhes →</a></div>
       </section>
 
       <section class="grade">
@@ -136,9 +136,11 @@
 
       <section class="card">
         <h2>Alertas e pontos de atenção</h2>
-        <p class="leg">3 alertas abertos · priorize os acompanhamentos do território</p>
+        <p class="leg" id="alertas-leg">3 alertas abertos · priorize os acompanhamentos do território</p>
+        <div id="alertas-metas">
         <div class="alerta"><div><b>Vigilância territorial abaixo da meta</b><small>16 de 24 rondas concluídas · São Miguel · Responsável: equipe de proteção</small></div><div>30 jun 2026<span class="badge alta">● Alta</span><a href="#">Ver alerta →</a></div></div>
         <div class="alerta"><div><b>Recuperação de áreas requer acompanhamento</b><small>35 de 50 hectares recuperados · Boa Esperança · Responsável: equipe ambiental</small></div><div>29 jun 2026<span class="badge media">● Média</span><a href="#">Ver alerta →</a></div></div>
+        </div>
         <div class="alerta"><div><b>Consolidação dos registros de campo</b><small>Validação complementar de 12 registros · Água Clara · Responsável: equipe de dados</small></div><div>28 jun 2026<span class="badge baixa">● Baixa</span><a href="#">Ver alerta →</a></div></div>
       </section>
 
@@ -148,6 +150,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="exportar.js"></script>
+  <script src="resumo-metas.js"></script>
   <script src="sync.js"></script>
 </body>
 </html>

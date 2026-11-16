@@ -37,14 +37,13 @@
     </header>
 
     <main>
-      <div class="so-print"><img src="logo-sistid.png" alt=""><div><b>Resumo · Indicadores e metas</b><span data-gerado></span></div></div>
       <div class="cabeca">
         <div>
           <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
           <h1>Indicadores e metas.</h1>
           <p>Monitore metas pactuadas, acompanhe resultados e identifique prioridades de atuação.</p>
         </div>
-        <button class="botao" type="button" data-exportar="resumo-indicadores" data-ocultar="#painel" data-sem-print>Exportar indicadores</button>
+        <button class="botao" type="button" id="btn-add-meta">+ Adicionar meta</button>
       </div>
 
       <div class="abas" role="tablist">
@@ -72,8 +71,11 @@
       <section class="card tabela-card">
         <div class="ferramentas">
           <input type="search" placeholder="Buscar indicador..." aria-label="Buscar indicador" id="busca">
-          <div class="chips">Status:
-            <span class="badge baixa">● Em dia</span><span class="badge media">● Em atenção</span><span class="badge alta">● Atrasado</span>
+          <div class="chips" id="chips-status" role="group" aria-label="Filtrar por status">Status:
+            <button type="button" class="badge baixa" data-status="baixa" aria-pressed="false">● Em dia</button>
+            <button type="button" class="badge media" data-status="media" aria-pressed="false">● Em atenção</button>
+            <button type="button" class="badge alta" data-status="alta" aria-pressed="false">● Atrasado</button>
+            <button type="button" class="badge neutra" data-status="neutra" aria-pressed="false">● Não iniciada</button>
           </div>
         </div>
         <div class="rolagem">
@@ -122,6 +124,23 @@
         <div class="jan-caixa"><h3>Meta estabelecida</h3><strong id="m-meta"></strong><span id="m-metatxt"></span></div>
         <div class="jan-caixa"><h3>Resultado atual</h3><strong id="m-res"></strong><span id="m-restxt"></span></div>
       </section>
+      <section class="jan-sec" id="m-prog">
+        <h3>Atualizar progresso</h3>
+        <p class="jan-ajuda">Informe quanto da meta já foi realizado; o percentual é calculado automaticamente. Indicadores alimentados por outros módulos são atualizados sozinhos, mas o ajuste manual fica disponível em todas as metas.</p>
+        <div class="prog-form">
+          <div>
+            <label for="m-real">Realizado até agora</label>
+            <div class="com-unid">
+              <input type="text" id="m-real" inputmode="decimal" autocomplete="off" aria-describedby="m-real-erro m-real-info">
+              <span class="unid" id="m-real-un"></span>
+            </div>
+          </div>
+          <div class="prog-prev" aria-live="polite">de <b id="m-real-meta"></b> <span class="seta">→</span> <b id="m-real-pct"></b></div>
+          <button type="button" class="botao" id="m-salvar">Salvar progresso</button>
+        </div>
+        <p class="erro" id="m-real-erro" role="alert" hidden></p>
+        <p class="jan-info" id="m-real-info" role="status"></p>
+      </section>
       <section class="jan-sec">
         <h3>Histórico de resultados</h3>
         <svg id="m-svg" viewBox="0 0 580 200" role="img" aria-label="Evolução mensal do indicador de janeiro a junho"></svg>
@@ -130,12 +149,104 @@
       </section>
       <section class="jan-sec jan-duo">
         <div><h3>Responsável pela execução da meta</h3><p id="m-resp"></p></div>
-        <div><h3>Prazo</h3><p id="m-prazo"></p></div>
+        <div><h3 id="m-prazo-t">Prazo</h3><p id="m-prazo"></p></div>
       </section>
       <section class="jan-sec"><h3>Observações</h3><p class="jan-obs" id="m-obs"></p></section>
-      <div class="jan-rod"><button type="button" class="botao" data-fechar>Fechar</button></div>
+      <div class="jan-rod jan-rod-del" id="m-rod">
+        <button type="button" class="botao sec perigo" id="m-excluir">Excluir meta</button>
+        <button type="button" class="botao" data-fechar>Fechar</button>
+      </div>
+      <div class="jan-confirma" id="m-confirma" role="alertdialog" aria-labelledby="m-conf-t" aria-describedby="m-conf-txt" hidden>
+        <p><b id="m-conf-t">Excluir esta meta?</b> <span id="m-conf-txt"></span></p>
+        <p class="erro" id="m-conf-erro" role="alert" hidden></p>
+        <div class="jan-confirma-acoes">
+          <button type="button" class="botao sec" id="m-conf-nao">Cancelar</button>
+          <button type="button" class="botao perigo" id="m-conf-sim">Sim, excluir</button>
+        </div>
+      </div>
     </div>
   </dialog>
+
+  <dialog class="janela janela-form" id="modal-meta" aria-labelledby="f-titulo">
+    <form class="jan-int" id="form-meta" novalidate>
+      <div class="jan-cab">
+        <div><div class="modulo-etq">NOVA META</div><h2 id="f-titulo">Adicionar meta</h2></div>
+        <button type="button" class="jan-x" data-fechar-meta aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="campo">
+        <label for="f-cat">Categoria <b class="req">*</b></label>
+        <select id="f-cat" required aria-describedby="e-cat">
+          <option value="">Selecione uma categoria</option>
+        </select>
+        <p class="erro" id="e-cat" role="alert" hidden></p>
+      </div>
+
+      <fieldset class="campo" id="f-ind" disabled>
+        <legend>Indicador <b class="req">*</b></legend>
+        <p class="ajuda" id="f-ind-ajuda">Selecione primeiro a categoria para escolher ou criar um indicador.</p>
+        <div class="opcoes">
+          <label class="opcao"><input type="radio" name="f-modo" value="existente" checked>
+            <span><b>Selecionar indicador existente</b><small>Escolha entre os indicadores já cadastrados na categoria.</small></span></label>
+          <label class="opcao"><input type="radio" name="f-modo" value="novo">
+            <span><b>Criar novo indicador</b><small>Cadastre um indicador que ainda não existe no sistema.</small></span></label>
+        </div>
+
+        <div id="f-bloco-exist">
+          <label for="f-sel">Indicador cadastrado</label>
+          <select id="f-sel" aria-describedby="e-sel f-desc"></select>
+          <p class="erro" id="e-sel" role="alert" hidden></p>
+          <p class="previa-ind" id="f-desc" hidden></p>
+        </div>
+
+        <div id="f-bloco-novo" hidden>
+          <label for="f-nome">Nome do indicador</label>
+          <input type="text" id="f-nome" maxlength="80" placeholder="Ex.: Mulheres em cargos de liderança" aria-describedby="e-nome">
+          <p class="erro" id="e-nome" role="alert" hidden></p>
+          <label for="f-unid">Unidade de medida</label>
+          <select id="f-unid" aria-describedby="e-unid">
+            <option value="">Selecione a unidade</option>
+            <option>Número absoluto</option>
+            <option>Percentual (%)</option>
+            <option>Valor em reais (R$)</option>
+            <option>Hectares (ha)</option>
+          </select>
+          <p class="erro" id="e-unid" role="alert" hidden></p>
+          <label for="f-descnovo">Descrição <span class="opc">(opcional)</span></label>
+          <textarea id="f-descnovo" rows="3" maxlength="240" placeholder="Explique o que o indicador mede e como é apurado."></textarea>
+        </div>
+      </fieldset>
+
+      <div class="campo-duo">
+        <div class="campo">
+          <label for="f-valor">Valor da meta <b class="req">*</b></label>
+          <div class="com-unid">
+            <input type="text" id="f-valor" inputmode="decimal" autocomplete="off" placeholder="Ex.: 120" aria-describedby="e-valor f-unid-rot">
+            <span class="unid" id="f-unid-rot"></span>
+          </div>
+          <p class="erro" id="e-valor" role="alert" hidden></p>
+        </div>
+        <div class="campo">
+          <label for="f-data">Data de criação</label>
+          <input type="text" id="f-data" readonly aria-describedby="f-data-aj">
+          <p class="ajuda" id="f-data-aj" style="margin:6px 0 0">Preenchida automaticamente.</p>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="f-resp">Responsável pela meta <b class="req">*</b></label>
+        <input type="text" id="f-resp" maxlength="80" autocomplete="off" placeholder="Ex.: Mariana Tavares · Coordenação de Monitoramento" aria-describedby="e-resp">
+        <p class="erro" id="e-resp" role="alert" hidden></p>
+      </div>
+
+      <div class="jan-rod jan-rod-form">
+        <button type="button" class="botao sec" data-fechar-meta>Cancelar</button>
+        <button type="submit" class="botao">Adicionar meta</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast-meta" role="status" aria-live="polite" hidden><span id="toast-txt"></span><button type="button" aria-label="Fechar aviso" id="toast-x">✕</button></div>
 
   <script>
     var fmtN = function (n) { return n.toLocaleString("pt-BR"); };
@@ -222,32 +333,160 @@
     };
 
     var meses = ["Jan","Fev","Mar","Abr","Mai","Jun"];
+
+    // Categorias disponíveis no cadastro de metas; os nomes vêm de CATS
+    var CATS_FORM = ["gat", "eco", "soc", "gov", "pol"];
+    var CH_METAS = "sistid-metas", CH_IND = "sistid-indicadores-novos", CH_PROG = "sistid-progresso", CH_EXC = "sistid-metas-excluidas", CH_RESUMO = "sistid-resumo-metas";
+    var UNIDS = {
+      "Número absoluto": { pre: "", suf: "" }, "Percentual (%)": { pre: "", suf: "%" },
+      "Valor em reais (R$)": { pre: "R$ ", suf: "" }, "Hectares (ha)": { pre: "", suf: " ha" }
+    };
+
+    // ---- Persistência (localStorage): lê com validação e grava conferindo o resultado ----
+    function lerLS(chave, padrao) {
+      try { var v = JSON.parse(localStorage.getItem(chave)); return v && typeof v === "object" ? v : padrao; } catch (e) { return padrao; }
+    }
+    function gravarLS(chave, valor) {
+      try { var txt = JSON.stringify(valor); localStorage.setItem(chave, txt); return localStorage.getItem(chave) === txt; } catch (e) { return false; }
+    }
+    var novosInd = lerLS(CH_IND, {});   // { catId: [ { id, nome, unid, desc } ] }
+    var metas = lerLS(CH_METAS, []);    // [ { id, cat, indId, indNome, valor, pre, suf, resp, criadaEm, realizado, atualizadoEm, historico } ]
+    var excluidas = lerLS(CH_EXC, []);  // [ indId ] -> metas pactuadas (pré-cadastradas) que o usuário excluiu
+    var prog = lerLS(CH_PROG, {});      // { indId: { valor, atualizadoEm, origem } }  -> ajustes de indicadores já existentes
+    if (!novosInd || Array.isArray(novosInd)) novosInd = {};
+    if (!prog || Array.isArray(prog)) prog = {};
+    if (!Array.isArray(metas)) metas = [];
+    if (!Array.isArray(excluidas)) excluidas = [];
+    CATS_FORM.forEach(function (c) { if (!Array.isArray(novosInd[c])) novosInd[c] = []; });
+    // Compatibilidade: metas salvas antes de existir progresso começam em 0
+    metas = metas.filter(function (m) { return m && m.id && m.cat && typeof m.valor === "number" && m.criadaEm; });
+    metas.forEach(function (m) {
+      if (typeof m.realizado !== "number") m.realizado = 0;
+      if (!m.atualizadoEm) m.atualizadoEm = m.criadaEm;
+      if (!Array.isArray(m.historico) || !m.historico.length) m.historico = [{ em: m.criadaEm, valor: m.realizado }];
+    });
+
+    // ---- Utilitários ----
+    function fmtData(d) { return p2(d.getDate()) + "/" + p2(d.getMonth() + 1) + "/" + d.getFullYear(); }
+    function fmtDM(d) { return p2(d.getDate()) + "/" + p2(d.getMonth() + 1); }
+    function p2(n) { return n < 10 ? "0" + n : "" + n; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function t(id, txt) { document.getElementById(id).textContent = txt; }
+    function catPorId(cid) { return CATS.filter(function (c) { return c.id === cid; })[0]; }
+    function novoDaCat(cid, id) { return (novosInd[cid] || []).filter(function (n) { return n.id === id; })[0]; }
+    function metaPorId(id) { return metas.filter(function (m) { return m.id === id; })[0]; }
+    function fmtU(v, u) { return (u.pre || "") + fmtN(v) + (u.suf || ""); }
+    function pctDe(v, meta) { return meta > 0 ? Math.round(v / meta * 100) : 0; }
+    // "1.000,5" ou "2,4" -> número; NaN se inválido
+    function lerNumero(txt) {
+      var s = txt.trim().replace(/\s/g, "");
+      if (!/^\d{1,3}(\.\d{3})*(,\d+)?$|^\d+(,\d+)?$/.test(s)) return NaN;
+      return parseFloat(s.replace(/\./g, "").replace(",", "."));
+    }
+    function passoBom(x) {
+      var p = Math.pow(10, Math.floor(Math.log(x) / Math.LN10)), r = x / p;
+      return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * p;
+    }
+    // Unidade (prefixo/sufixo) de um indicador existente, p.ex. "12 pontos" -> sufixo " pontos"
+    function unidDe(id) {
+      var d = D[id], m;
+      if (d.prefixo !== undefined) return { pre: d.prefixo, suf: d.sufixo || "" };
+      m = d.res.match(/^[^\d]*[\d.,]+(.*)$/);
+      return { pre: "", suf: m ? m[1] : (d.sufixo || "") };
+    }
+    // Regra de status a partir do progresso: >=100% em dia; 70–99% em atenção; abaixo disso atrasado; 0% não iniciada
+    function statusPor(p) {
+      if (p >= 100) return { cls: "baixa", st: "Em dia" };
+      if (p >= 70) return { cls: "media", st: "Em atenção" };
+      if (p > 0) return { cls: "alta", st: "Atrasado" };
+      return { cls: "neutra", st: "Não iniciada" };
+    }
+
+    // ---- Dados "efetivos" de cada linha: base + ajustes salvos ----
+    function efExistente(id) {
+      var d = D[id], pr = prog[id], u = unidDe(id), e = {}, k, pct, s;
+      for (k in d) e[k] = d[k];
+      e.id = id; e.nova = false; e.un = u; e.serie = d.serie.slice();
+      e.real = d.serie[d.serie.length - 1]; e.atual = DET[id].atual;
+      if (pr && typeof pr.valor === "number") {
+        pct = pctDe(pr.valor, d.metaVal); s = statusPor(pct);
+        e.real = pr.valor; e.serie[e.serie.length - 1] = pr.valor;
+        e.res = (u.suf === " mil" && pr.valor >= 1000)
+          ? u.pre + fmtN(pr.valor / 1000) + (pr.valor < 2000 ? " milhão" : " milhões")   // ex.: R$ 1,5 milhão, como no valor original
+          : fmtU(pr.valor, u);
+        e.alc = pct + "%"; e.cls = s.cls; e.st = s.st; e.atual = fmtData(new Date(pr.atualizadoEm));
+        while (e.max < pr.valor) e.max += e.passo;
+        while (e.min > pr.valor) e.min = Math.max(0, e.min - e.passo);
+      }
+      return e;
+    }
+    function descMeta(m) {
+      var n;
+      if (D[m.indId]) return D[m.indId].desc;
+      n = novoDaCat(m.cat, m.indId);
+      return (n && n.desc) || "Sem descrição informada.";
+    }
+    function efMeta(m) {
+      var h = m.historico.slice(-6), vals = h.map(function (x) { return x.valor; }),
+          top = Math.max(m.valor, Math.max.apply(null, vals)), passo = passoBom(top / 3), u = { pre: m.pre, suf: m.suf },
+          pct = pctDe(m.realizado, m.valor), s = statusPor(pct);
+      return { id: m.id, nova: true, titulo: m.indNome, desc: descMeta(m), prefixo: m.pre, sufixo: m.suf, un: u,
+        min: 0, max: Math.ceil(top / passo) * passo, passo: passo, metaVal: m.valor, serie: vals,
+        labels: h.map(function (x) { return fmtDM(new Date(x.em)); }),
+        meta: fmtU(m.valor, u), res: fmtU(m.realizado, u), real: m.realizado, alc: pct + "%", cls: s.cls, st: s.st,
+        gt: "Evolução do progresso da meta", l1: "Realizado", l2: "Meta: " + fmtU(m.valor, u), rotMeta: "Meta",
+        atual: fmtData(new Date(m.atualizadoEm)) };
+    }
+    function E(id) { var m = metaPorId(id); return m ? efMeta(m) : efExistente(id); }
+
+    // Informações da janela "Detalhes"
+    function X(id) {
+      var m = metaPorId(id), x, r = {}, k, pr;
+      if (m) {
+        return { metaTxt: "Atingir " + fmtU(m.valor, { pre: m.pre, suf: m.suf }) + " · meta cadastrada em " + fmtData(new Date(m.criadaEm)) + ".",
+          atual: fmtData(new Date(m.atualizadoEm)), resp: m.resp, prazoRot: "Data de criação", prazo: fmtData(new Date(m.criadaEm)),
+          obs: m.realizado > 0 ? "Sem observações registradas." : "Meta recém-cadastrada, ainda sem progresso. Atualize o realizado conforme as ações forem concluídas.",
+          manual: m.historico.length > 1 ? m.atualizadoEm : null };
+      }
+      x = DET[id]; pr = prog[id];
+      for (k in x) r[k] = x[k];
+      r.prazoRot = "Prazo"; r.manual = pr ? pr.atualizadoEm : null;
+      if (pr) r.atual = fmtData(new Date(pr.atualizadoEm));
+      return r;
+    }
+
     var painel = document.getElementById("painel");
     var modal = document.getElementById("modal");
     var tbody = document.getElementById("linhas");
-    var cat = null, linhas = [], atual = null;
+    var cat = null, linhas = [], atual = null, abertoId = null;
 
-    function t(id, txt) { document.getElementById(id).textContent = txt; }
+    function idsDaCat(c) { return c.ind.filter(function (i) { return excluidas.indexOf(i) < 0; }).concat(metas.filter(function (m) { return m.cat === c.id; }).map(function (m) { return m.id; })); }
     function y(d, v) { return 160 - (v - d.min) / (d.max - d.min) * 140; }
-    function serie(d) { return d.serie.map(function (n, k) { return meses[k] + " " + (d.prefixo || "") + fmtN(n) + d.sufixo; }).join(" · "); }
+    function serie(d) {
+      var lb = d.labels || meses;
+      return d.serie.map(function (n, k) { return lb[k] + " " + (d.prefixo || "") + fmtN(n) + (d.sufixo || ""); }).join(" · ");
+    }
 
     function desenhar(d, alvo) {
+      var lb = d.labels || meses, n = d.serie.length, passos = Math.round((d.max - d.min) / d.passo);
       var s = "<g stroke='#E4E9EB'>", tx = "<g text-anchor='end'>", i, v;
-      for (v = d.min; v <= d.max; v += d.passo) {
+      for (i = 0; i <= passos; i++) {
+        v = d.min + i * d.passo;
         s += "<path d='M40 " + y(d, v).toFixed(1) + "H560'/>";
         tx += "<text x='30' y='" + (y(d, v) + 4).toFixed(1) + "'>" + fmtN(v) + "</text>";
       }
       s += "</g>" + tx + "</g><g text-anchor='middle'>";
-      for (i = 0; i < 6; i++) s += "<text x='" + (40 + i * 100) + "' y='185'>" + meses[i] + "</text>";
+      for (i = 0; i < n; i++) s += "<text x='" + (40 + i * 100) + "' y='185'>" + lb[i] + "</text>";
       s += "</g><path d='M40 " + y(d, d.metaVal).toFixed(1) + "H540' stroke='#D7B548' stroke-width='2' stroke-dasharray='6 4'/>";
-      var pts = d.serie.map(function (n, k) { return (40 + k * 100) + "," + y(d, n).toFixed(1); });
-      s += "<polyline points='" + pts.join(" ") + "' fill='none' stroke='#155344' stroke-width='2.5'/><g fill='#155344'>";
+      var pts = d.serie.map(function (v2, k) { return (40 + k * 100) + "," + y(d, v2).toFixed(1); });
+      if (n > 1) s += "<polyline points='" + pts.join(" ") + "' fill='none' stroke='#155344' stroke-width='2.5'/>";
+      s += "<g fill='#155344'>";
       pts.forEach(function (p) { var c = p.split(","); s += "<circle cx='" + c[0] + "' cy='" + c[1] + "' r='3'/>"; });
       document.getElementById(alvo || "p-svg").innerHTML = s + "</g>";
     }
 
     function mostrar(id) {
-      var d = D[id];
+      var d = E(id);
       t("p-titulo", d.titulo);
       t("p-sub", "PAINEL DO INDICADOR SELECIONADO · " + cat.nome + " · Rio Verde");
       t("p-desc", d.desc);
@@ -272,49 +511,172 @@
     }
 
     function linhaHtml(id) {
-      var d = D[id], a = parseInt(d.alc, 10);
-      return '<tr data-id="' + id + '" tabindex="0"><td><b>' + d.titulo + '</b><small></small></td><td>' + d.meta + '</td><td>' + d.res +
+      var d = E(id), a = parseInt(d.alc, 10);
+      return '<tr data-id="' + id + '" data-cls="' + d.cls + '" tabindex="0"><td><b>' + esc(d.titulo) + '</b>' + (d.nova ? ' <span class="tag-nova">Nova meta</span>' : '') + '<small></small></td><td>' + esc(d.meta) + '</td><td>' + esc(d.res) +
         '</td><td><div class="prog"><i style="--p:' + Math.min(a, 100) + '%"></i>' + d.alc + '</div></td><td><span class="badge ' + d.cls + '" style="margin:0">● ' + d.st +
-        '</span></td><td>' + DET[id].atual + '</td><td><button type="button" class="lnk" data-detalhes>Detalhes →</button></td></tr>';
+        '</span></td><td>' + d.atual + '</td><td><button type="button" class="lnk" data-detalhes>Detalhes →</button></td></tr>';
     }
 
-    // Troca de categoria: refaz os cards, a tabela e o painel
-    function renderCat(cid) {
-      cat = CATS.filter(function (c) { return c.id === cid; })[0];
+    // Filtro de status: clicar num status mostra só as metas dele; clicar de novo remove o filtro
+    var filtroStatus = null, totalLinhas = 0;
+    var chipsEl = document.getElementById("chips-status");
+    function marcarChips() {
+      chipsEl.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.status === filtroStatus ? "true" : "false"); });
+      chipsEl.classList.toggle("filtrando", !!filtroStatus);
+    }
+    function aplicarBusca() {
+      var termo = document.getElementById("busca").value.toLowerCase(), vis = 0;
+      linhas.forEach(function (tr) {
+        var ok = (!filtroStatus || tr.dataset.cls === filtroStatus) && tr.textContent.toLowerCase().indexOf(termo) !== -1;
+        tr.hidden = !ok; if (ok) vis++;
+      });
+      document.getElementById("sem-resultado").hidden = vis > 0;
+      t("r-tab", (vis ? "Exibindo 1–" + vis : "Exibindo 0") + " de " + totalLinhas + (totalLinhas === 1 ? " indicador" : " indicadores") + " · Metas pactuadas para 2026");
+    }
+    chipsEl.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-status]"); if (!b) return;
+      filtroStatus = filtroStatus === b.dataset.status ? null : b.dataset.status;
+      marcarChips(); aplicarBusca();
+    });
+
+    // Resumo para o painel inicial (index.html): total de metas e quantas ainda não foram atingidas.
+    // Considera todas as categorias; é regravado a cada mudança (adicionar, excluir, salvar progresso).
+    // Também publica os alertas: metas "Atrasado" (alta) e "Em atenção" (média), das mais críticas para as menos.
+    function publicarResumo() {
+      var total = 0, andamento = 0, alertas = [];
+      CATS.forEach(function (c) {
+        idsDaCat(c).forEach(function (i) {
+          var d = E(i);
+          total++; if (d.cls !== "baixa") andamento++;
+          if (d.cls === "alta" || d.cls === "media")
+            alertas.push({ id: i, titulo: d.titulo, cls: d.cls, res: d.res, meta: d.meta, alc: parseInt(d.alc, 10) || 0, resp: X(i).resp, cat: c.nome, atual: d.atual });
+        });
+      });
+      alertas.sort(function (a, b) { return (a.cls === b.cls ? 0 : a.cls === "alta" ? -1 : 1) || a.alc - b.alc; });
+      gravarLS(CH_RESUMO, { total: total, andamento: andamento, alertas: alertas, em: new Date().toISOString() });
+    }
+
+    // Troca de categoria: refaz os cards, a tabela e o painel. Com "manter", preserva a seleção e a busca
+    function renderCat(cid, manter) {
+      var antes = atual;
+      cat = catPorId(cid);
       document.querySelectorAll(".abas button").forEach(function (b) { b.classList.toggle("ativa", b.dataset.cat === cid); });
-      var n = cat.ind.length, c = { baixa: 0, media: 0, alta: 0 };
-      cat.ind.forEach(function (i) { c[D[i].cls]++; });
+      var ids = idsDaCat(cat), n = ids.length, c = { baixa: 0, media: 0, alta: 0, neutra: 0 };
+      ids.forEach(function (i) { c[E(i).cls]++; });
       t("k-total", n); t("k-cat", cat.nome);
       [["dia", "baixa"], ["atencao", "media"], ["atrasado", "alta"]].forEach(function (p) {
-        t("k-" + p[0], c[p[1]]); t("k-" + p[0] + "-p", Math.round(c[p[1]] / n * 100) + "% dos indicadores");
+        t("k-" + p[0], c[p[1]]); t("k-" + p[0] + "-p", (n ? Math.round(c[p[1]] / n * 100) : 0) + "% dos indicadores");
       });
-      tbody.innerHTML = cat.ind.map(function (i) { return linhaHtml(i); }).join("");
-      linhas = tbody.querySelectorAll("tr");
-      t("r-tab", "Exibindo 1–" + n + " de " + n + (n === 1 ? " indicador" : " indicadores") + " · Metas pactuadas para 2026");
-      document.getElementById("busca").value = "";
+      tbody.innerHTML = ids.map(function (i) { return linhaHtml(i); }).join("") +
+        '<tr id="sem-resultado" hidden><td colspan="7" style="color:var(--cinza);text-align:center;padding:28px 16px">' + (n ? "Nenhuma meta encontrada com os filtros selecionados." : "Nenhuma meta nesta categoria. Use “+ Adicionar meta” para cadastrar uma.") + '</td></tr>';
+      linhas = tbody.querySelectorAll("tr[data-id]");
+      totalLinhas = n;
+      if (!manter) { document.getElementById("busca").value = ""; filtroStatus = null; }
+      marcarChips();
       atual = null;
-      selecionar(cat.ind[0]); // o primeiro indicador já vem selecionado, como no Figma
+      selecionar(manter && ids.indexOf(antes) >= 0 ? antes : ids[0]); // o primeiro já vem selecionado, como no Figma
+      aplicarBusca();
+      publicarResumo();
     }
 
-    // Janela de detalhes
-    function abrir(id) {
-      var d = D[id], x = DET[id];
+    // ---- Janela de detalhes + atualização de progresso ----
+    function erroProg(msg) { var e = document.getElementById("m-real-erro"); e.textContent = msg || ""; e.hidden = !msg; document.getElementById("m-real").setAttribute("aria-invalid", msg ? "true" : "false"); }
+    function infoProg(x) { t("m-real-info", x && x.manual ? "Último ajuste manual em " + fmtData(new Date(x.manual)) + "." : ""); }
+
+    function abrir(id, msgInfo) {
+      var d = E(id), x = X(id);
+      abertoId = id;
       t("m-titulo", d.titulo); t("m-desc", d.desc);
       t("m-meta", d.meta); t("m-metatxt", x.metaTxt);
       t("m-res", d.res); t("m-restxt", d.alc + " da meta · atualizado em " + x.atual);
       t("m-leg1", d.l1); t("m-leg2", d.l2); t("m-serie", serie(d));
-      t("m-resp", x.resp); t("m-prazo", x.prazo); t("m-obs", x.obs);
+      t("m-resp", x.resp); t("m-prazo-t", x.prazoRot); t("m-prazo", x.prazo || DET[id].prazo); t("m-obs", x.obs);
       var st = document.getElementById("m-status");
       st.className = "badge " + d.cls; st.textContent = "● " + d.st;
+      document.getElementById("m-real").value = fmtN(d.real);
+      t("m-real-un", (d.un.pre + d.un.suf).trim()); document.getElementById("m-real-un").hidden = !(d.un.pre + d.un.suf).trim();
+      t("m-real-meta", d.meta); t("m-real-pct", d.alc);
+      erroProg(""); infoProg(x); fecharConfirmacao();
+      if (msgInfo) t("m-real-info", msgInfo);
       desenhar(d, "m-svg");
-      modal.showModal();
+      if (!modal.open) modal.showModal();
     }
+
+    document.getElementById("m-real").addEventListener("input", function (e) {
+      var v = lerNumero(e.target.value), d = E(abertoId);
+      erroProg("");
+      t("m-real-pct", isNaN(v) ? "—" : pctDe(v, d.metaVal) + "%");
+    });
+
+    function salvarProgresso() {
+      var id = abertoId, v = lerNumero(document.getElementById("m-real").value), m = metaPorId(id), ok, ant, agora = new Date().toISOString();
+      if (isNaN(v)) { erroProg("Informe um número válido (ex.: 50 ou 2,4)."); document.getElementById("m-real").focus(); return; }
+      if (m) {
+        ant = { r: m.realizado, a: m.atualizadoEm, n: m.historico.length };
+        m.realizado = v; m.atualizadoEm = agora; m.historico.push({ em: agora, valor: v });
+        ok = gravarLS(CH_METAS, metas);
+        if (!ok) { m.realizado = ant.r; m.atualizadoEm = ant.a; m.historico.length = ant.n; }
+      } else {
+        ant = prog[id];
+        prog[id] = { valor: v, atualizadoEm: agora, origem: "manual" };
+        ok = gravarLS(CH_PROG, prog);
+        if (!ok) { if (ant) prog[id] = ant; else delete prog[id]; }
+      }
+      if (!ok) { erroProg("Não foi possível salvar o progresso no navegador (armazenamento indisponível ou cheio)."); return; }
+      if (window.sincronizar) window.sincronizar();
+      renderCat(cat.id, true);
+      abrir(id, "Progresso salvo em " + fmtData(new Date(agora)) + ".");
+    }
+    document.getElementById("m-salvar").addEventListener("click", salvarProgresso);
+    document.getElementById("m-real").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); salvarProgresso(); } });
+
+    // ---- Excluir meta (com confirmação na própria janela) ----
+    function fecharConfirmacao() {
+      document.getElementById("m-confirma").hidden = true;
+      document.getElementById("m-rod").hidden = false;
+      var er = document.getElementById("m-conf-erro"); er.textContent = ""; er.hidden = true;
+    }
+    function pedirExclusao() {
+      var d = E(abertoId);
+      t("m-conf-txt", "“" + d.titulo + "” será removida da lista de metas. Essa ação não pode ser desfeita.");
+      document.getElementById("m-rod").hidden = true;
+      document.getElementById("m-confirma").hidden = false;
+      document.getElementById("m-conf-nao").focus(); // o foco começa no botão seguro
+    }
+    function excluirMeta() {
+      var id = abertoId, m = metaPorId(id), titulo = E(id).titulo, ok, i, antProg;
+      if (m) {
+        // Meta cadastrada pelo usuário: sai da lista de metas
+        i = metas.indexOf(m); metas.splice(i, 1);
+        ok = gravarLS(CH_METAS, metas);
+        if (!ok) metas.splice(i, 0, m);
+      } else {
+        // Meta pactuada (pré-cadastrada): fica registrada como excluída e o ajuste manual de progresso é descartado
+        antProg = prog[id]; excluidas.push(id); delete prog[id];
+        ok = gravarLS(CH_EXC, excluidas) && gravarLS(CH_PROG, prog);
+        if (!ok) { excluidas.pop(); if (antProg) prog[id] = antProg; gravarLS(CH_EXC, excluidas); gravarLS(CH_PROG, prog); }
+      }
+      if (!ok) {
+        var er = document.getElementById("m-conf-erro");
+        er.textContent = "Não foi possível excluir a meta (armazenamento do navegador indisponível ou cheio).";
+        er.hidden = false;
+        return;
+      }
+      if (window.sincronizar) window.sincronizar();
+      modal.close();
+      renderCat(cat.id, true);
+      aviso("Meta “" + titulo + "” excluída.");
+    }
+    document.getElementById("m-excluir").addEventListener("click", pedirExclusao);
+    document.getElementById("m-conf-nao").addEventListener("click", function () { fecharConfirmacao(); document.getElementById("m-excluir").focus(); });
+    document.getElementById("m-conf-sim").addEventListener("click", excluirMeta);
+
     modal.addEventListener("click", function (e) {
       if (e.target === modal || e.target.closest("[data-fechar]")) modal.close();
     });
 
     tbody.addEventListener("click", function (e) {
-      var tr = e.target.closest("tr"); if (!tr) return;
+      var tr = e.target.closest("tr"); if (!tr || !tr.dataset.id) return;
       var id = tr.dataset.id;
       if (e.target.closest("[data-detalhes]")) { if (atual !== id) selecionar(id); abrir(id); return; }
       selecionar(id);
@@ -328,19 +690,167 @@
       var b = e.target.closest("button[data-cat]");
       if (b) renderCat(b.dataset.cat);
     });
+    document.getElementById("busca").addEventListener("input", aplicarBusca);
 
-    // Busca simples: esconde as linhas que não contêm o texto digitado
-    document.getElementById("busca").addEventListener("input", function (e) {
-      var termo = e.target.value.toLowerCase();
-      linhas.forEach(function (tr) { tr.hidden = tr.textContent.toLowerCase().indexOf(termo) === -1; });
+    // ---- Adicionar meta ----
+    var fm = {
+      dlg: document.getElementById("modal-meta"), form: document.getElementById("form-meta"),
+      cat: document.getElementById("f-cat"), grupo: document.getElementById("f-ind"), ajuda: document.getElementById("f-ind-ajuda"),
+      exist: document.getElementById("f-bloco-exist"), novo: document.getElementById("f-bloco-novo"),
+      sel: document.getElementById("f-sel"), desc: document.getElementById("f-desc"),
+      nome: document.getElementById("f-nome"), unid: document.getElementById("f-unid"), descNovo: document.getElementById("f-descnovo"),
+      valor: document.getElementById("f-valor"), unidRot: document.getElementById("f-unid-rot"),
+      data: document.getElementById("f-data"), resp: document.getElementById("f-resp")
+    };
+    var toastEl = document.getElementById("toast-meta"), toastTimer = null;
+    function modo() { return fm.form.querySelector("input[name=f-modo]:checked").value; }
+
+    // Indicadores já cadastrados na categoria (existentes + criados pelo usuário)
+    function indicadoresDa(cid) {
+      var lista = catPorId(cid).ind.map(function (i) { return { v: i, t: D[i].titulo }; });
+      novosInd[cid].forEach(function (n) { lista.push({ v: n.id, t: n.nome }); });
+      return lista;
+    }
+
+    // Unidade do campo "Valor da meta", conforme o indicador escolhido ou criado
+    function unidadeAtual() {
+      var u = { pre: "", suf: "" }, v = fm.sel.value;
+      if (modo() === "novo") u = UNIDS[fm.unid.value] || u;
+      else if (v && D[v]) u = unidDe(v);
+      else if (v && fm.cat.value) { var n = novoDaCat(fm.cat.value, v); if (n && UNIDS[n.unid]) u = UNIDS[n.unid]; }
+      return u;
+    }
+    function atualizarUnidade() {
+      var u = unidadeAtual(), r = (u.pre + u.suf).trim();
+      fm.unidRot.textContent = r; fm.unidRot.hidden = !r;
+    }
+
+    var CAMPOS_ERRO = { cat: fm.cat, sel: fm.sel, nome: fm.nome, unid: fm.unid, valor: fm.valor, resp: fm.resp };
+    function erro(id, msg) {
+      var e = document.getElementById("e-" + id);
+      e.textContent = msg || ""; e.hidden = !msg;
+      CAMPOS_ERRO[id].setAttribute("aria-invalid", msg ? "true" : "false");
+    }
+    function limparErros() { Object.keys(CAMPOS_ERRO).forEach(function (k) { erro(k, ""); }); }
+
+    fm.cat.innerHTML += CATS_FORM.map(function (cid) { return '<option value="' + cid + '">' + esc(catPorId(cid).nome) + "</option>"; }).join("");
+
+    // Atualiza o dropdown de indicadores sempre que a categoria muda
+    function atualizarIndicadores() {
+      var cid = fm.cat.value;
+      fm.grupo.disabled = !cid;
+      fm.ajuda.hidden = !!cid;
+      fm.desc.hidden = true;
+      if (!cid) { fm.sel.innerHTML = ""; return; }
+      fm.sel.innerHTML = '<option value="">Selecione um indicador</option>' +
+        indicadoresDa(cid).map(function (o) { return '<option value="' + o.v + '">' + esc(o.t) + "</option>"; }).join("");
+    }
+    function atualizarModo() {
+      var novo = modo() === "novo";
+      fm.exist.hidden = novo; fm.novo.hidden = !novo;
+      erro("sel", ""); erro("nome", ""); erro("unid", "");
+      atualizarUnidade();
+    }
+    function mostrarDescricao() {
+      var v = fm.sel.value, cid = fm.cat.value, txt = "", n;
+      if (v && D[v]) txt = D[v].desc;
+      else if (v && (n = novoDaCat(cid, v))) txt = n.desc;
+      fm.desc.textContent = txt; fm.desc.hidden = !txt;
+    }
+    function abrirMeta() {
+      fm.form.reset(); limparErros();
+      fm.data.value = fmtData(new Date());
+      atualizarIndicadores(); atualizarModo();
+      fm.dlg.showModal();
+      fm.cat.focus();
+    }
+    function aviso(txt) {
+      document.getElementById("toast-txt").textContent = txt;
+      toastEl.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toastEl.hidden = true; }, 6000);
+    }
+
+    function enviarMeta(e) {
+      e.preventDefault();
+      limparErros();
+      var cid = fm.cat.value, ok = true, primeiro = null, nome = "";
+      function falha(id, msg) { erro(id, msg); ok = false; if (!primeiro) primeiro = CAMPOS_ERRO[id]; }
+
+      if (!cid) falha("cat", "Selecione a categoria da meta.");
+      else if (modo() === "existente") {
+        if (!fm.sel.value) falha("sel", "Selecione um indicador.");
+      } else {
+        nome = fm.nome.value.trim().replace(/\s+/g, " ");
+        if (nome.length < 3) falha("nome", "Informe o nome do indicador (mínimo de 3 caracteres).");
+        else if (indicadoresDa(cid).some(function (o) { return o.t.toLowerCase() === nome.toLowerCase(); }))
+          falha("nome", "Já existe um indicador com esse nome nesta categoria. Use a opção \"Selecionar indicador existente\".");
+        if (!fm.unid.value) falha("unid", "Selecione a unidade de medida.");
+      }
+      var valor = lerNumero(fm.valor.value);
+      if (!fm.valor.value.trim()) falha("valor", "Informe o valor da meta.");
+      else if (isNaN(valor) || valor <= 0) falha("valor", "Informe um número maior que zero (ex.: 120 ou 2,4).");
+      var resp = fm.resp.value.trim().replace(/\s+/g, " ");
+      if (resp.length < 3) falha("resp", "Informe o responsável pela meta.");
+      if (!ok) { primeiro.focus(); return; }
+
+      // Monta os registros e grava; se o armazenamento falhar, desfaz e mantém o formulário aberto
+      var agora = new Date(), iso = agora.toISOString(), u = unidadeAtual(), indId, indNome, criado = null;
+      if (modo() === "novo") {
+        criado = { id: "novo-" + agora.getTime(), nome: nome, unid: fm.unid.value, desc: fm.descNovo.value.trim() };
+        indId = criado.id; indNome = nome;
+        novosInd[cid].push(criado);
+      } else { indId = fm.sel.value; indNome = fm.sel.options[fm.sel.selectedIndex].text; }
+      // Metas novas começam com 0 de progresso
+      var meta = { id: "meta-" + agora.getTime(), cat: cid, indId: indId, indNome: indNome, valor: valor, pre: u.pre, suf: u.suf, resp: resp,
+        criadaEm: iso, realizado: 0, atualizadoEm: iso, historico: [{ em: iso, valor: 0 }] };
+      metas.push(meta);
+
+      if (!(gravarLS(CH_IND, novosInd) && gravarLS(CH_METAS, metas))) {
+        metas.pop(); if (criado) novosInd[cid].pop();
+        gravarLS(CH_IND, novosInd); gravarLS(CH_METAS, metas);
+        aviso("Não foi possível salvar a meta no navegador (armazenamento indisponível ou cheio).");
+        return;
+      }
+      if (window.sincronizar) window.sincronizar();
+      fm.dlg.close();
+      // Mostra a meta na lista: abre a aba da categoria e seleciona a nova linha
+      renderCat(cid);
+      selecionar(meta.id);
+      var tr = tbody.querySelector('tr[data-id="' + meta.id + '"]');
+      if (tr) { tr.classList.add("nova-linha"); tr.scrollIntoView({ block: "center", behavior: "smooth" }); }
+      aviso("Meta de " + fmtU(valor, u) + " adicionada ao indicador “" + indNome + "” (" + catPorId(cid).nome + "), com 0% de progresso.");
+    }
+
+    document.getElementById("btn-add-meta").addEventListener("click", abrirMeta);
+    fm.cat.addEventListener("change", function () { erro("cat", ""); atualizarIndicadores(); atualizarUnidade(); });
+    fm.sel.addEventListener("change", function () { erro("sel", ""); mostrarDescricao(); atualizarUnidade(); });
+    fm.form.querySelectorAll("input[name=f-modo]").forEach(function (r) { r.addEventListener("change", atualizarModo); });
+    fm.nome.addEventListener("input", function () { erro("nome", ""); });
+    fm.unid.addEventListener("change", function () { erro("unid", ""); atualizarUnidade(); });
+    fm.valor.addEventListener("input", function () { erro("valor", ""); });
+    fm.resp.addEventListener("input", function () { erro("resp", ""); });
+    fm.form.addEventListener("submit", enviarMeta);
+    fm.dlg.addEventListener("click", function (e) {
+      if (e.target === fm.dlg || e.target.closest("[data-fechar-meta]")) fm.dlg.close();
     });
+    document.getElementById("toast-x").addEventListener("click", function () { toastEl.hidden = true; });
 
     renderCat("gat");
+
+    // Link vindo do painel inicial (indicadores.html#<id da meta>): abre a categoria e seleciona a meta
+    (function () {
+      var h = decodeURIComponent((location.hash || "").slice(1)), c;
+      if (!h) return;
+      c = CATS.filter(function (x) { return idsDaCat(x).indexOf(h) >= 0; })[0];
+      if (!c) return;
+      renderCat(c.id);
+      if (atual !== h) selecionar(h);
+      var tr = tbody.querySelector('tr[data-id="' + h + '"]');
+      if (tr) tr.scrollIntoView({ block: "center" });
+    })();
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="exportar.js"></script>
   <script src="sync.js"></script>
 </body>
 </html>
