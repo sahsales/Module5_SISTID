@@ -12,34 +12,15 @@
 }
 * { box-sizing: border-box; }
 body {
-  margin: 0; display: grid; grid-template-columns: 248px 1fr;
+  margin: 0;
   background: var(--fundo); color: var(--texto);
   font: 14px/1.4 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 2px solid var(--ouro); outline-offset: 2px; }
 
-/* Menu lateral */
-.menu {
-  position: sticky; top: 0; height: 100vh; overflow-y: auto;
-  background: var(--verde-escuro); color: #fff; padding: 24px 18px;
-  display: flex; flex-direction: column;
-}
-.logo { display: block; margin-bottom: 24px; }
-.logo img { display: block; width: 100%; height: auto; }
-.modulo {
-  border: 1px solid rgba(255,255,255,.25); border-radius: 6px; padding: 8px 10px;
-  color: var(--ouro); font-size: 11px; font-weight: 600; margin-bottom: 20px;
-}
-.menu nav a { display: block; padding: 10px 12px; border-radius: 6px; color: #e6eeec; }
-.menu nav a:hover { background: rgba(255,255,255,.08); }
-.menu nav a.ativo { background: var(--verde); font-weight: 600; color: #fff; }
-.menu nav .sub { padding-left: 30px; font-size: 13px; }
-.menu nav .sub.ativo::before { content: "• "; color: var(--ouro); }
-.usuario { margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.15); font-size: 12px; }
-.usuario small { display: block; opacity: .7; }
-
-/* Conteúdo */
+/* Conteúdo (a tela ao lado do menu) */
+.tela { min-width: 0; }
 .topo {
   display: flex; justify-content: space-between; align-items: center;
   background: #fff; padding: 18px 32px; border-bottom: 1px solid var(--borda);
@@ -103,8 +84,6 @@ svg text { font: 10px Inter, system-ui, sans-serif; fill: var(--cinza); }
   .grade { grid-template-columns: 1fr; }
 }
 @media (max-width: 800px) {
-  body { grid-template-columns: 1fr; }
-  .menu { position: static; height: auto; }
   .kpis { grid-template-columns: 1fr 1fr; }
   .filtros { grid-template-columns: 1fr; }
   .cabeca { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -322,3 +301,49 @@ tr.nova-linha td { animation: destaque 2.4s ease-out; }
 .jan-confirma p { margin: 0 0 12px; }
 .jan-confirma .erro { margin: -4px 0 12px; }
 .jan-confirma-acoes { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+
+/* ---- Faixa de status no topo dos cards de resumo ---- */
+.card.faixa-neutro { border-top: 4px solid var(--cinza); }
+.card.faixa-ok { border-top: 4px solid var(--verde); }
+.card.faixa-atencao { border-top: 4px solid var(--ouro); }
+.card.faixa-atrasado { border-top: 4px solid var(--vermelho); }
+
+/* ---- Animações dos gráficos de barras (as de linha, rosca e radar ficam em anim.js) ---- */
+@keyframes barra-cresce { from { width: 0; } }
+.barra i { animation: barra-cresce .9s cubic-bezier(.22,.61,.36,1) both; }
+.barra:nth-of-type(1) i { animation-delay: .05s; }
+.barra:nth-of-type(2) i { animation-delay: .15s; }
+.barra:nth-of-type(3) i { animation-delay: .25s; }
+.barra:nth-of-type(4) i { animation-delay: .35s; }
+.prog i::after { animation: barra-cresce .9s cubic-bezier(.22,.61,.36,1) both; }
+
+.grade-extra { margin-top: 24px; margin-bottom: 0; }
+.grade-extra .alerta:first-of-type { border-top: 0; }
+
+/* ---- Sininho de notificações (sino.js) ---- */
+.sino { position: relative; display: inline-flex; }
+.sino-btn { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; color: var(--cinza); cursor: pointer; transition: background .15s, color .15s; }
+.sino-btn svg { width: 20px; height: 20px; }
+.sino-btn:hover, .sino-btn[aria-expanded=true] { background: var(--fundo); color: var(--texto); }
+.sino-btn:focus-visible { outline: 2px solid var(--ouro); outline-offset: 1px; }
+.sino-n { position: absolute; top: 2px; right: 1px; box-sizing: content-box; min-width: 12px; height: 12px; padding: 0 2px; border-radius: 99px; background: var(--vermelho); color: #fff; font-size: 9px; font-weight: 700; line-height: 12px; text-align: center; border: 2px solid #fff; }
+.sino-n[hidden] { display: none; }
+.sino-pop { position: absolute; right: -36px; top: calc(100% + 12px); z-index: 50; width: 380px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid var(--borda); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,.16); overflow: hidden; }
+.sino-pop[hidden] { display: none; }
+.sino-cab { padding: 16px 18px 12px; border-bottom: 1px solid var(--borda); }
+.sino-cab b { display: block; font-size: 15px; font-weight: 600; }
+.sino-cab small { color: var(--cinza); font-size: 12px; }
+.sino-lista { list-style: none; margin: 0; padding: 0; max-height: 360px; overflow-y: auto; }
+.sino-lista li + li { border-top: 1px solid var(--borda); }
+.sino-lista a { display: block; padding: 14px 18px; color: inherit; text-decoration: none; border-left: 3px solid var(--vermelho); }
+.sino-lista a:hover, .sino-lista a:focus-visible { background: #F8FAFB; outline: 0; }
+.sino-lista a b { display: block; font-size: 13px; font-weight: 600; }
+.sino-det { display: block; color: var(--cinza); font-size: 12px; margin-top: 2px; }
+.sino-data { display: block; color: var(--cinza); font-size: 11px; margin-top: 8px; }
+.sino-lista .sino-data b { display: inline; color: var(--vermelho); font-weight: 600; font-size: 11px; }
+.sino-vazio { margin: 0; padding: 22px 18px; color: var(--cinza); font-size: 13px; }
+.sino-tag { display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 99px; background: #F8E6E3; color: var(--vermelho); font-size: 10px; font-weight: 600; vertical-align: 1px; }
+/* notificações já lidas ficam esmaecidas */
+.sino-lista li.lida a { opacity: .62; border-left-color: #CBD3D5; }
+.sino-lista li.lida a:hover, .sino-lista li.lida a:focus-visible { opacity: .85; }
+.sino-lista li.lida .sino-data b { color: var(--cinza); }

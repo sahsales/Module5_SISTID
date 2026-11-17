@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Aberta sozinha (sem o menu lateral)? Vai para a moldura inicial, que carrega esta tela ao lado do menu.
+    if (window.top === window) {
+      var _n = location.pathname.split("/").pop() || "visao-geral.html";
+      if (!/\.html$/.test(_n)) _n += ".html";
+      location.replace("index.html?tela=" + encodeURIComponent(_n) + location.hash);
+    }
+  </script>
+  <title>Visão geral · SISTID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="tela">
+    <header class="topo">
+      <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Visão geral</span></div>
+      <div><span class="avatar">GE</span></div>
+    </header>
+
+    <main>
+      <div class="so-print"><img src="logo-sistid.png" alt=""><div><b>Resumo · Visão geral</b><span data-gerado></span></div></div>
+      <div class="cabeca">
+        <div>
+          <div class="modulo-etq">MÓDULO 5 · MONITORAMENTO E AVALIAÇÃO</div>
+          <h1>Visão geral.</h1>
+          <p>Acompanhe os resultados, as ações e os sinais de atenção do território.</p>
+        </div>
+        <button class="botao" type="button" data-exportar="resumo-visao-geral" data-sem-print>Exportar resumo</button>
+      </div>
+
+      <section class="card filtros" aria-label="Filtros">
+        <label>Território<select><option>TI Rio Verde</option></select></label>
+        <label>Comunidades<select><option>Todas as comunidades (4)</option></select></label>
+        <label>Período<select><option>Janeiro a junho de 2026</option></select></label>
+        <button type="button">Filtros</button>
+      </section>
+
+      <section class="kpis">
+        <div class="card kpi faixa-neutro"><small>Territórios acompanhados</small><strong>1</strong><span>4 comunidades acompanhadas</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi faixa-neutro"><small>População abrangida</small><strong>1.280</strong><span>Pessoas no território</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi faixa-atencao"><small>Ações realizadas</small><strong>128</strong><span>85% da meta de 150 ações</span><a href="#">Ver detalhes →</a></div>
+        <div class="card kpi faixa-atencao" id="k-metas-card"><small>Metas em andamento</small><strong id="k-metas-and">8</strong><span id="k-metas-tot">de 12 metas monitoradas</span><a href="indicadores.html">Ver detalhes →</a></div>
+      </section>
+
+      <section class="grade">
+        <div class="card">
+          <h2>Evolução das ações</h2>
+          <p class="leg">Janeiro a junho de 2026 · 128 ações executadas</p>
+          <svg data-anim viewBox="0 0 580 200" role="img" aria-label="Linha de ações executadas e meta mensal, de janeiro a junho">
+            <g stroke="#E4E9EB"><path d="M40 20H560M40 66.7H560M40 113.3H560M40 160H560"/></g>
+            <g text-anchor="end"><text x="30" y="24">40</text><text x="30" y="70">30</text><text x="30" y="117">20</text><text x="30" y="164">10</text></g>
+            <g text-anchor="middle"><text x="40" y="185">Jan</text><text x="140" y="185">Fev</text><text x="240" y="185">Mar</text><text x="340" y="185">Abr</text><text x="440" y="185">Mai</text><text x="540" y="185">Jun</text></g>
+            <polyline points="40,136.7 140,108.7 240,85.3 340,85.3 440,62 540,38.7" fill="none" stroke="#D7B548" stroke-width="2" stroke-dasharray="6 4"/>
+            <polyline points="40,155.3 140,132 240,108.7 340,99.3 440,71.3 540,62" fill="none" stroke="#155344" stroke-width="2.5"/>
+            <g fill="#155344"><circle cx="40" cy="155.3" r="3"/><circle cx="140" cy="132" r="3"/><circle cx="240" cy="108.7" r="3"/><circle cx="340" cy="99.3" r="3"/><circle cx="440" cy="71.3" r="3"/><circle cx="540" cy="62" r="3"/></g>
+          </svg>
+          <div class="legenda"><span><i class="pt" style="background:var(--verde)"></i>Ações executadas</span><span><i class="pt" style="background:var(--ouro)"></i>Meta mensal</span></div>
+        </div>
+
+        <div class="card">
+          <h2>Comparação entre comunidades</h2>
+          <p class="leg">Ações executadas no semestre · TI Rio Verde</p>
+          <div class="barra"><span>Aldeia Nova</span><div><i style="width:95%"></i></div><b>38</b></div>
+          <div class="barra"><span>Boa Esperança</span><div><i style="width:85%"></i></div><b>34</b></div>
+          <div class="barra"><span>Água Clara</span><div><i style="width:75%"></i></div><b>30</b></div>
+          <div class="barra"><span>São Miguel</span><div><i style="width:65%"></i></div><b>26</b></div>
+          <p class="leg" style="margin-top:24px">128 ações realizadas nas quatro comunidades do território.</p>
+        </div>
+
+        <div class="card">
+          <h2>Fontes de dados</h2>
+          <p class="leg">Origem dos registros utilizados no monitoramento</p>
+          <div class="duplo">
+            <svg data-anim viewBox="0 0 120 120" width="180" role="img" aria-label="240 registros validados por fonte">
+              <g data-rosca fill="none" stroke-width="14" transform="rotate(-90 60 60)">
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#155344" stroke-dasharray="10 90"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#559C85" stroke-dasharray="20 80" stroke-dashoffset="-10"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#D7B548" stroke-dasharray="10 90" stroke-dashoffset="-30"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#78878A" stroke-dasharray="20 80" stroke-dashoffset="-40"/>
+                <circle cx="60" cy="60" r="45" pathLength="100" stroke="#A7C2B7" stroke-dasharray="40 60" stroke-dashoffset="-60"/>
+              </g>
+              <text x="60" y="64" text-anchor="middle" style="font-size:20px;font-weight:500;fill:#1C2B2A">240</text>
+              <text x="60" y="76" text-anchor="middle" style="font-size:6px">registros validados</text>
+            </svg>
+            <div class="fontes">
+              <p><span><i class="pt" style="background:#155344"></i>IBGE<small>24 registros</small></span><b>10%</b></p>
+              <p><span><i class="pt" style="background:#559C85"></i>INPE<small>48 registros</small></span><b>20%</b></p>
+              <p><span><i class="pt" style="background:#D7B548"></i>INMET<small>24 registros</small></span><b>10%</b></p>
+              <p><span><i class="pt" style="background:#78878A"></i>MapBiomas<small>48 registros</small></span><b>20%</b></p>
+              <p><span><i class="pt" style="background:#A7C2B7"></i>FUNAI<small>96 registros</small></span><b>40%</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Desempenho por dimensão</h2>
+          <p class="leg">Índice sintético de 0 a 100</p>
+          <div class="duplo">
+            <svg data-anim viewBox="0 0 300 200" width="300" role="img" aria-label="Radar de desempenho por dimensão">
+              <g transform="translate(50 0)" fill="none" stroke="#E4E9EB">
+                <polygon points="100,30 160.6,65 160.6,135 100,170 39.4,135 39.4,65"/>
+                <polygon points="100,65 130.3,82.5 130.3,117.5 100,135 69.7,117.5 69.7,82.5"/>
+                <polygon data-radar data-cx="100" data-cy="100" vector-effect="non-scaling-stroke" points="100,49.6 141.2,76.2 149.1,128.4 100,152.5 61.2,122.4 52.7,72.7" fill="rgba(85,156,133,.2)" stroke="#155344" stroke-width="2"/>
+              </g>
+              <g text-anchor="middle"><text x="150" y="20">Gestão Ambiental e Territorial</text><text x="150" y="190">Governança Territorial</text></g>
+              <text x="216" y="62">Econômico</text><text x="216" y="141">Social, Saúde</text><text x="216" y="153">e Educação</text>
+              <g text-anchor="end"><text x="84" y="141">Políticas</text><text x="84" y="153">Públicas</text><text x="84" y="62">Territorial</text></g>
+            </svg>
+            <div class="dim">
+              <p>Gestão Ambiental e Territorial <b>72/100</b></p><p>Econômico <b>68/100</b></p><p>Social, Saúde e Educação <b>81/100</b></p>
+              <p>Governança Territorial <b>75/100</b></p><p>Políticas Públicas <b>64/100</b></p><p>Territorial <b>78/100</b></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="grade grade-extra">
+        <div class="card">
+          <h2>Alertas parados há muito tempo</h2>
+          <p class="leg" id="parados-leg">Alertas abertos há mais de 30 dias sem atualização</p>
+          <div id="parados-lista"></div>
+        </div>
+        <div class="card">
+          <h2>Metas mais próximas de bater</h2>
+          <p class="leg" id="proximas-leg">Metas acima de 70% que ainda não chegaram a 100%</p>
+          <div id="proximas-lista"></div>
+        </div>
+      </section>
+
+      <p class="rodape" data-sync></p>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="exportar.js"></script>
+  <script src="resumo-metas.js"></script>
+  <script src="anim.js"></script>
+  <script src="sino.js"></script>
+  <script src="sync.js"></script>
+</body>
+</html>

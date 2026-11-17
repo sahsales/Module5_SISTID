@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu lateral · SISTID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+  <aside class="menu">
+    <a class="logo" href="visao-geral.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
+    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
+    <nav>
+      <a href="#">Painel Principal</a>
+      <a href="#">Base Territorial</a>
+      <a href="#">Governança</a>
+      <a href="#">Etnozoneamento</a>
+      <a href="#">Formação</a>
+      <a href="#">Pesquisa e Dados</a>
+      <a href="visao-geral.html" class="ativo">Monitoramento</a>
+      <a href="visao-geral.html" class="sub">Visão geral</a>
+      <a href="indicadores.html" class="sub">Indicadores e metas</a>
+      <a href="relatorios.html" class="sub">Relatórios</a>
+      <a href="#">Comunicação</a>
+      <a href="#">Gestão Documental</a>
+      <a href="#">Administração</a>
+    </nav>
+    <div class="usuario"><b>Gestor</b></div>
+  </aside>
+
+  <script>
+    var links = document.querySelectorAll(".menu nav a.sub");
+    function marcar(pagina) {
+      links.forEach(function (a) {
+        var on = a.getAttribute("href") === pagina;
+        a.classList.toggle("ativo", on);
+        if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      });
+    }
+    // Marca o item da tela atual: menu.html?ativo=indicadores.html (ou coloque aria-current="page" no item, pelo seu roteador).
+    marcar(new URLSearchParams(location.search).get("ativo"));
+    // Dentro de uma moldura (index.html), os links abrem na área da tela (iframe name="conteudo") e o item clicado fica marcado.
+    document.querySelectorAll(".menu nav a[href]").forEach(function (a) {
+      var href = a.getAttribute("href");
+      if (href === "#") return;
+      if (window.parent !== window) a.target = "conteudo";
+      a.addEventListener("click", function () { marcar(href); });
+    });
+  </script>
+</body>
+</html>

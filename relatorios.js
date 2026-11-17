@@ -7,15 +7,38 @@
   var NUM = ["zero", "um", "dois", "três", "quatro"];
   var COM = { "Aldeia Nova": 38, "Boa Esperança": 34, "Água Clara": 30, "São Miguel": 26 };
   var TODAS = "Aldeia Nova, Boa Esperança, Água Clara e São Miguel";
-  var FONTES = "IBGE, INPE, INMET, MapBiomas e FUNAI. Consolidação: Ana Costa · Analista FUNAI.";
+  var FONTES = "IBGE, INPE, INMET, MapBiomas e FUNAI. Consolidação: Gestor.";
 
-  // Dados dos indicadores (iguais aos da tela Indicadores e metas)
-  var IND = [
-    { id: "cobertura", ord: 2, nome: "Cobertura territorial monitorada", meta: "90%", res: "72%", alc: "80%", st: "atencao", up: "30/06/2026", prio: "Ampliar o monitoramento para os 18 pontos percentuais restantes da meta." },
-    { id: "agua", ord: 4, nome: "Pontos de água monitorados", meta: "12 pontos", res: "12 pontos", alc: "100%", st: "dia", up: "30/06/2026", prio: "Manter a análise dos 12 pontos de água." },
-    { id: "areas", ord: 3, nome: "Áreas em recuperação", meta: "50 ha", res: "35 ha", alc: "70%", st: "atencao", up: "29/06/2026", prio: "Recuperar os 15 hectares previstos.", foco: "dar continuidade à recuperação de áreas" },
-    { id: "rondas", ord: 1, nome: "Rondas de vigilância territorial", meta: "24 rondas", res: "16 rondas", alc: "67%", st: "atrasado", up: "30/06/2026", prio: "Reprogramar as 8 rondas pendentes com a equipe de proteção territorial.", foco: "ampliar as rondas de vigilância" }
+  // Categorias (as mesmas da tela Indicadores e metas). "frase" fecha o parágrafo de síntese do relatório da categoria.
+  var CATS = [
+    { id: "gat", nome: "Gestão Ambiental e Territorial", frase: "A cobertura territorial alcançou 72%, frente à meta de 90%." },
+    { id: "eco", nome: "Econômico", frase: "O faturamento anual chegou a R$ 168 mil, frente à meta de R$ 480 mil, e 96 famílias produtoras recebem acompanhamento técnico." },
+    { id: "soc", nome: "Social, Saúde e Educação", frase: "O saneamento básico chegou a 78% dos domicílios, frente à meta de 85%, e 312 alunos estão em formação." },
+    { id: "gov", nome: "Governança Territorial", frase: "Foram realizadas 22 reuniões comunitárias, frente à meta de 20." },
+    { id: "pol", nome: "Políticas Públicas", frase: "O investimento público chegou a R$ 1,08 milhão, frente à meta de R$ 2,4 milhões, e 1.150 pessoas foram atendidas." }
   ];
+  function catPorId(id) { return CATS.filter(function (c) { return c.id === id; })[0] || CATS[0]; }
+
+  // Dados dos indicadores (iguais aos da tela Indicadores e metas). "ord" = ordem de prioridade dentro da categoria.
+  var IND = [
+    { id: "cobertura", cat: "gat", ord: 2, nome: "Cobertura territorial monitorada", meta: "90%", res: "72%", alc: "80%", st: "atencao", up: "30/06/2026", prio: "Ampliar o monitoramento para os 18 pontos percentuais restantes da meta." },
+    { id: "agua", cat: "gat", ord: 4, nome: "Pontos de água monitorados", meta: "12 pontos", res: "12 pontos", alc: "100%", st: "dia", up: "30/06/2026", prio: "Manter a análise dos 12 pontos de água." },
+    { id: "areas", cat: "gat", ord: 3, nome: "Áreas em recuperação", meta: "50 ha", res: "35 ha", alc: "70%", st: "atencao", up: "29/06/2026", prio: "Recuperar os 15 hectares previstos.", foco: "dar continuidade à recuperação de áreas" },
+    { id: "rondas", cat: "gat", ord: 1, nome: "Rondas de vigilância territorial", meta: "24 rondas", res: "16 rondas", alc: "67%", st: "atrasado", up: "30/06/2026", prio: "Reprogramar as 8 rondas pendentes com a equipe de proteção territorial.", foco: "ampliar as rondas de vigilância" },
+
+    { id: "faturamento", cat: "eco", ord: 1, nome: "Faturamento anual", meta: "R$ 480 mil", res: "R$ 168 mil", alc: "35%", st: "atrasado", up: "30/06/2026", prio: "Acelerar o escoamento da produção e avaliar o novo ponto de venda para fechar o ano na meta.", foco: "acelerar o escoamento da produção" },
+    { id: "familias", cat: "eco", ord: 2, nome: "Famílias produtoras", meta: "120 famílias", res: "96 famílias", alc: "80%", st: "atencao", up: "28/06/2026", prio: "Concluir o cadastro e a assistência técnica das 24 famílias restantes.", foco: "concluir o cadastro das famílias restantes" },
+
+    { id: "cursos", cat: "soc", ord: 1, nome: "Quantidade de cursos oferecidos", meta: "12 cursos", res: "7 cursos", alc: "58%", st: "atrasado", up: "29/06/2026", prio: "Reprogramar os cinco cursos pendentes para o próximo ciclo, garantindo os instrutores.", foco: "reprogramar os cursos pendentes" },
+    { id: "saneamento", cat: "soc", ord: 2, nome: "Saneamento básico", meta: "85%", res: "78%", alc: "92%", st: "atencao", up: "27/06/2026", prio: "Liberar os materiais para finalizar a rede de abastecimento na comunidade restante.", foco: "finalizar a rede de saneamento" },
+    { id: "alunos", cat: "soc", ord: 3, nome: "Alunos em formação", meta: "300 alunos", res: "312 alunos", alc: "104%", st: "dia", up: "30/06/2026", prio: "Manter as turmas extras e o acompanhamento dos 312 alunos em formação." },
+
+    { id: "reunioes", cat: "gov", ord: 1, nome: "Reuniões comunitárias realizadas", meta: "20 reuniões", res: "22 reuniões", alc: "110%", st: "dia", up: "30/06/2026", prio: "Manter o calendário de reuniões e usar as reuniões extras para planejar as ações do próximo ciclo." },
+
+    { id: "investimento", cat: "pol", ord: 1, nome: "Investimento anual", meta: "R$ 2,4 milhões", res: "R$ 1,08 milhão", alc: "45%", st: "atencao", up: "26/06/2026", prio: "Regularizar a execução dos repasses no próximo trimestre.", foco: "regularizar a execução dos repasses" },
+    { id: "beneficiarios", cat: "pol", ord: 2, nome: "Beneficiários", meta: "1.000 pessoas", res: "1.150 pessoas", alc: "115%", st: "dia", up: "30/06/2026", prio: "Manter a ampliação do cadastro em benefícios sociais." }
+  ];
+  function indsDaCat(cid) { return IND.filter(function (i) { return i.cat === cid; }); }
   var CH_HIST = "sistid-historico";
   var HIST = [];
   try { HIST = JSON.parse(localStorage.getItem(CH_HIST)) || []; } catch (e) { HIST = []; }
@@ -29,7 +52,8 @@
   // ---------- Modelo: tudo que o relatório mostra vem daqui ----------
   function modelo(cfg) {
     var todas = cfg.com === "todas";
-    var sel = IND.filter(function (i) { return cfg.ids.indexOf(i.id) > -1; });
+    var cat = catPorId(cfg.cat);
+    var sel = IND.filter(function (i) { return i.cat === cat.id && cfg.ids.indexOf(i.id) > -1; });
     var n = sel.length, c = { dia: 0, atencao: 0, atrasado: 0 };
     sel.forEach(function (i) { c[i.st]++; });
     var ord = sel.slice().sort(function (a, b) { return a.ord - b.ord; });
@@ -38,7 +62,7 @@
       if (c[k]) partes.push(n === 1 ? SG[k] : NUM[c[k]] + " " + (c[k] === 1 ? SG[k] : PL[k]));
     });
     var foco = ord.filter(function (i) { return i.foco; }).map(function (i) { return i.foco; });
-    var p2 = n ? (n > 1 ? "Entre os " + NUM[n] + " indicadores de Gestão Ambiental e Territorial selecionados, " : "O indicador de Gestão Ambiental e Territorial selecionado ") + lista(partes) + "." : "";
+    var p2 = n ? (n > 1 ? "Entre os " + NUM[n] + " indicadores de " + cat.nome + " selecionados, " : "O indicador de " + cat.nome + " selecionado ") + lista(partes) + "." : "";
     if (foco.length) p2 += (foco.length > 1 ? " As prioridades são " : " A prioridade é ") + lista(foco) + ".";
     var ids = cfg.ids, pr = [];
     ord.forEach(function (i) {
@@ -46,11 +70,11 @@
       pr.push(i.id === "areas" && ids.indexOf("agua") > -1 ? "Recuperar os 15 hectares previstos e manter a análise dos 12 pontos de água." : i.prio);
     });
     return {
-      sel: sel, n: n, c: c, num: cfg.num || proxNum(), emit: cfg.emit || hoje(), pr: pr, p2: p2, todas: todas, com: cfg.com,
+      cat: cat, sel: sel, n: n, c: c, num: cfg.num || proxNum(), emit: cfg.emit || hoje(), pr: pr, p2: p2, todas: todas, com: cfg.com,
       sub: "TI Rio Verde · " + (todas ? "Todas as comunidades" : cfg.com),
       comLinha: (todas ? TODAS : cfg.com) + ".",
       p1: todas
-        ? "O monitoramento da TI Rio Verde abrangeu 1.280 pessoas em quatro comunidades. No semestre, foram executadas 128 ações, com 84% das demandas atendidas (42 de 50). A cobertura territorial alcançou 72%, frente à meta de 90%."
+        ? "O monitoramento da TI Rio Verde abrangeu 1.280 pessoas em quatro comunidades. No semestre, foram executadas 128 ações, com 84% das demandas atendidas (42 de 50). " + cat.frase
         : "O monitoramento da comunidade " + cfg.com + ", na TI Rio Verde, registrou " + COM[cfg.com] + " ações executadas no semestre."
     };
   }
@@ -67,7 +91,7 @@
       '<p class="r-et">RELATÓRIO SEMESTRAL · 2026</p><h1>Monitoramento e avaliação territorial.</h1><p class="r-sub">' + m.sub + "</p>" +
       '<div class="r-met"><span>Período: 01/01/2026 a 30/06/2026</span><span>Emitido em: ' + m.emit + '</span></div><p class="r-com">Comunidades: ' + m.comLinha + "</p>" +
       "<h2>1. Síntese do período</h2><p>" + m.p1 + "</p>" + (m.p2 ? "<p>" + m.p2 + "</p>" : "") + '<div class="r-ks">' + kp + "</div>" +
-      "<h2>2. Resultados dos indicadores de Gestão Ambiental e Territorial</h2>" +
+      "<h2>2. Resultados dos indicadores de " + m.cat.nome + "</h2>" +
       '<div class="r-l r-h"><span>Indicador</span><span>Meta</span><span>Resultado</span><span>Alcance¹</span><span>Status</span></div>' + linhas +
       '<p class="r-nota">¹ Alcance = resultado ÷ meta × 100, arredondado. Atualização: 30/06/2026.</p>' +
       "<h2>3. Prioridades para o próximo ciclo</h2><ul>" + m.pr.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" +
@@ -111,7 +135,7 @@
       rc(d, x, y, 166, 76, k[2], "#E4E9EB"); tx(d, String(k[1]), x + 12, y + 36, 24, G, 1); tx(d, k[0], x + 12, y + 58, 10, CZ);
     });
     y += 118;
-    tx(d, "2. Resultados dos indicadores de Gestão Ambiental e Territorial", 48, y, 17, G, 1); y += 18;
+    tx(d, "2. Resultados dos indicadores de " + m.cat.nome, 48, y, 17, G, 1); y += 18;
     rc(d, 48, y, 698, 40, "#E8F2ED");
     [["Indicador", 58], ["Meta", 286], ["Resultado", 376], ["Alcance¹", 466], ["Status", 546]].forEach(function (h) { tx(d, h[0], h[1], y + 24, 9, G, 1); });
     y += 40;
@@ -139,7 +163,7 @@
 
   // ---------- CSV (separador ";" e BOM, para abrir certo no Excel em português) ----------
   function csv(m) {
-    var L = [["Relatório", "Monitoramento e avaliação territorial"], ["Território", "TI Rio Verde"], ["Comunidades", m.comLinha.replace(/\.$/, "")], ["Período", "Janeiro a junho de 2026"], [],
+    var L = [["Relatório", "Monitoramento e avaliação territorial"], ["Território", "TI Rio Verde"], ["Categoria", m.cat.nome], ["Comunidades", m.comLinha.replace(/\.$/, "")], ["Período", "Janeiro a junho de 2026"], [],
       ["Indicador", "Meta", "Resultado", "Alcance", "Status", "Última atualização"]];
     m.sel.forEach(function (i) { L.push([i.nome, i.meta, i.res, i.alc, ST[i.st][0], i.up]); });
     var txt = L.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";"); }).join("\r\n");
@@ -162,7 +186,8 @@
     return {
       num: proxNum(), emit: hoje(),
       com: $("#f-com").value,
-      ids: IND.filter(function (i) { return $("#i-" + i.id).checked; }).map(function (i) { return i.id; }),
+      cat: $("#f-cat").value,
+      ids: indsDaCat($("#f-cat").value).filter(function (i) { return $("#i-" + i.id) && $("#i-" + i.id).checked; }).map(function (i) { return i.id; }),
       fmt: document.querySelector("input[name=fmt]:checked").value
     };
   }
@@ -174,11 +199,19 @@
     var cfg = lerCfg(), m = modelo(cfg);
     $("#rel").innerHTML = htmlRel(m);
     $("#cont").textContent = m.n + (m.n === 1 ? " selecionado" : " selecionados");
-    $("#grupo").textContent = m.n === 4 ? "· todos selecionados" : "· " + m.n + " de 4 selecionados";
+    var tot = indsDaCat(m.cat.id).length;
+    $("#grupo-nome").textContent = m.cat.nome;
+    $("#grupo").textContent = m.n === tot ? "· " + (tot === 1 ? "selecionado" : "todos selecionados") : "· " + m.n + " de " + tot + " selecionados";
     $("#resumo").textContent = m.n + (m.n === 1 ? " indicador" : " indicadores") + " · 1 página";
     $("#rod-prev").textContent = cfg.fmt === "csv" ? "Prévia do relatório · o CSV leva só a tabela de dados" : "Visualização para impressão · PDF";
     document.querySelectorAll(".gerar").forEach(function (b) { b.disabled = !m.n; });
     escala();
+  }
+  // Mostra os indicadores da categoria escolhida (todos já marcados)
+  function listarInds() {
+    $("#ck").innerHTML = indsDaCat($("#f-cat").value).map(function (i) {
+      return '<label><input type="checkbox" id="i-' + i.id + '" checked> ' + i.nome + "</label>";
+    }).join("");
   }
   function toast(t) {
     var e = $("#toast"); e.querySelector("span").textContent = t; e.hidden = false;
@@ -191,12 +224,16 @@
     }).join("") : '<tr><td colspan="5" style="color:var(--cinza)">Nenhum relatório gerado ainda. Os relatórios que você gerar aparecem aqui.</td></tr>';
   }
 
-  document.querySelectorAll("#cfg input, #cfg select").forEach(function (e) { e.addEventListener("change", atualizar); });
+  $("#f-cat").innerHTML = CATS.map(function (c) { return '<option value="' + c.id + '">' + c.nome + "</option>"; }).join("");
+  $("#cfg").addEventListener("change", function (e) {
+    if (e.target.id === "f-cat") listarInds();
+    atualizar();
+  });
   document.querySelectorAll(".gerar").forEach(function (b) {
     b.addEventListener("click", function () {
       var cfg = lerCfg();
       if (!baixar(cfg)) return;
-      HIST.unshift({ nome: "Relatório semestral · Gestão Ambiental e Territorial" + (cfg.com === "todas" ? "" : " · " + cfg.com), sub: "TI Rio Verde · " + cfg.ids.length + (cfg.ids.length === 1 ? " indicador" : " indicadores") + " · Ana Costa", per: "Jan – jun 2026", data: cfg.emit, fmt: cfg.fmt, cfg: cfg });
+      HIST.unshift({ nome: "Relatório semestral · " + catPorId(cfg.cat).nome + (cfg.com === "todas" ? "" : " · " + cfg.com), sub: "TI Rio Verde · " + cfg.ids.length + (cfg.ids.length === 1 ? " indicador" : " indicadores") + " · Gestor", per: "Jan – jun 2026", data: cfg.emit, fmt: cfg.fmt, cfg: cfg });
       guardarHist(); hist(); atualizar();
       if (window.sincronizar) window.sincronizar();
       toast("Relatório gerado e baixado.");
@@ -213,5 +250,5 @@
   window.addEventListener("resize", escala);
 
   window.SISTID = { modelo: modelo, htmlRel: htmlRel, csv: csv };
-  hist(); atualizar();
+  listarInds(); hist(); atualizar();
 })();

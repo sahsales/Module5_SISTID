@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Aberta sozinha (sem o menu lateral)? Vai para a moldura inicial, que carrega esta tela ao lado do menu.
+    if (window.top === window) {
+      var _n = location.pathname.split("/").pop() || "visao-geral.html";
+      if (!/\.html$/.test(_n)) _n += ".html";
+      location.replace("index.html?tela=" + encodeURIComponent(_n) + location.hash);
+    }
+  </script>
   <title>Relatórios · SISTID</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,31 +18,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <aside class="menu">
-    <a class="logo" href="index.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
-    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
-    <nav>
-      <a href="#">Painel Principal</a>
-      <a href="#">Base Territorial</a>
-      <a href="#">Governança</a>
-      <a href="#">Etnozoneamento</a>
-      <a href="#">Formação</a>
-      <a href="#">Pesquisa e Dados</a>
-      <a href="index.html" class="ativo">Monitoramento</a>
-      <a href="index.html" class="sub">Visão geral</a>
-      <a href="indicadores.html" class="sub">Indicadores e metas</a>
-      <a href="relatorios.html" class="sub ativo">Relatórios</a>
-      <a href="#">Comunicação</a>
-      <a href="#">Gestão Documental</a>
-      <a href="#">Administração</a>
-    </nav>
-    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small></div>
-  </aside>
 
-  <div>
+  <div class="tela">
     <header class="topo">
       <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Relatórios</span></div>
-      <div><span class="avatar">AC</span></div>
+      <div><span class="avatar">GE</span></div>
     </header>
 
     <main>
@@ -57,14 +45,10 @@
           <label>Período<select id="f-per"><option>Janeiro a junho de 2026</option></select></label>
 
           <div class="sec-t"><b>Indicadores do relatório</b><span id="cont"></span></div>
-          <div class="grupo">Gestão Ambiental e Territorial <small id="grupo"></small></div>
-          <div class="ck">
-            <label><input type="checkbox" id="i-cobertura" checked> Cobertura territorial monitorada</label>
-            <label><input type="checkbox" id="i-agua" checked> Pontos de água monitorados</label>
-            <label><input type="checkbox" id="i-areas" checked> Áreas em recuperação</label>
-            <label><input type="checkbox" id="i-rondas" checked> Rondas de vigilância territorial</label>
-          </div>
-          <p class="leg">Outras categorias podem ser incluídas em novos relatórios.</p>
+          <label for="f-cat">Categoria<select id="f-cat"></select></label>
+          <div class="grupo" style="margin-top:14px"><span id="grupo-nome"></span> <small id="grupo"></small></div>
+          <div class="ck" id="ck"></div>
+          <p class="leg">Escolha a categoria para ver os indicadores disponíveis. Cada relatório cobre uma categoria.</p>
 
           <div class="sec-t"><b>Formato de saída</b></div>
           <div class="fmt">
@@ -97,6 +81,7 @@
   <div class="toast" id="toast" hidden role="status"><span></span><button type="button" aria-label="Fechar">✕</button></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="sino.js"></script>
   <script src="sync.js"></script>
   <script src="relatorios.js"></script>
 </body>

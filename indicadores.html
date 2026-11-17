@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Aberta sozinha (sem o menu lateral)? Vai para a moldura inicial, que carrega esta tela ao lado do menu.
+    if (window.top === window) {
+      var _n = location.pathname.split("/").pop() || "visao-geral.html";
+      if (!/\.html$/.test(_n)) _n += ".html";
+      location.replace("index.html?tela=" + encodeURIComponent(_n) + location.hash);
+    }
+  </script>
   <title>Indicadores e metas · SISTID</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,30 +18,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <aside class="menu">
-    <a class="logo" href="index.html"><img src="logo-sistid.png" alt="SISTID · Sistema de Inteligência Socioterritorial das Terras Indígenas Desintrusadas"></a>
-    <div class="modulo">// MÓDULO 5 · MONITORAMENTO</div>
-    <nav>
-      <a href="#">Painel Principal</a>
-      <a href="#">Base Territorial</a>
-      <a href="#">Governança</a>
-      <a href="#">Etnozoneamento</a>
-      <a href="#">Formação</a>
-      <a href="#">Pesquisa e Dados</a>
-      <a href="index.html" class="ativo">Monitoramento</a>
-      <a href="index.html" class="sub">Visão geral</a>
-      <a href="indicadores.html" class="sub ativo">Indicadores e metas</a>
-      <a href="relatorios.html" class="sub">Relatórios</a>
-      <a href="#">Comunicação</a>
-      <a href="#">Gestão Documental</a>
-      <a href="#">Administração</a>
-    </nav>
-    <div class="usuario"><b>Ana Costa</b><small>Analista FUNAI</small></div>
-  </aside>
-  <div>
+  <div class="tela">
     <header class="topo">
       <div><span style="color:var(--cinza)">Monitoramento /</span> <span class="atual">Indicadores e metas</span></div>
-      <div><span class="avatar">AC</span></div>
+      <div><span class="avatar">GE</span></div>
     </header>
 
     <main>
@@ -62,10 +50,10 @@
       </section>
 
       <section class="kpis4">
-        <div class="card"><div><small>Indicadores monitorados</small><strong id="k-total"></strong></div><i class="ico">≡</i><span id="k-cat"></span></div>
-        <div class="card"><div><small>Metas em dia</small><strong id="k-dia"></strong></div><i class="ico ok">✓</i><span id="k-dia-p"></span></div>
-        <div class="card"><div><small>Metas em atenção</small><strong id="k-atencao"></strong></div><i class="ico at">◷</i><span id="k-atencao-p"></span></div>
-        <div class="card"><div><small>Metas atrasadas</small><strong id="k-atrasado"></strong></div><i class="ico ra">!</i><span id="k-atrasado-p"></span></div>
+        <div class="card faixa-neutro"><div><small>Indicadores monitorados</small><strong id="k-total"></strong></div><i class="ico">≡</i><span id="k-cat"></span></div>
+        <div class="card faixa-ok"><div><small>Metas em dia</small><strong id="k-dia"></strong></div><i class="ico ok">✓</i><span id="k-dia-p"></span></div>
+        <div class="card faixa-atencao"><div><small>Metas em atenção</small><strong id="k-atencao"></strong></div><i class="ico at">◷</i><span id="k-atencao-p"></span></div>
+        <div class="card faixa-atrasado"><div><small>Metas atrasadas</small><strong id="k-atrasado"></strong></div><i class="ico ra">!</i><span id="k-atrasado-p"></span></div>
       </section>
 
       <section class="card tabela-card">
@@ -248,6 +236,7 @@
 
   <div class="toast" id="toast-meta" role="status" aria-live="polite" hidden><span id="toast-txt"></span><button type="button" aria-label="Fechar aviso" id="toast-x">✕</button></div>
 
+  <script src="anim.js"></script>
   <script>
     var fmtN = function (n) { return n.toLocaleString("pt-BR"); };
 
@@ -482,7 +471,9 @@
       if (n > 1) s += "<polyline points='" + pts.join(" ") + "' fill='none' stroke='#155344' stroke-width='2.5'/>";
       s += "<g fill='#155344'>";
       pts.forEach(function (p) { var c = p.split(","); s += "<circle cx='" + c[0] + "' cy='" + c[1] + "' r='3'/>"; });
-      document.getElementById(alvo || "p-svg").innerHTML = s + "</g>";
+      var svg = document.getElementById(alvo || "p-svg");
+      svg.innerHTML = s + "</g>";
+      if (window.animarGrafico) window.animarGrafico(svg);
     }
 
     function mostrar(id) {
@@ -539,21 +530,28 @@
       marcarChips(); aplicarBusca();
     });
 
-    // Resumo para o painel inicial (index.html): total de metas e quantas ainda não foram atingidas.
+    // Resumo para o painel inicial (visao-geral.html): total de metas e quantas ainda não foram atingidas.
     // Considera todas as categorias; é regravado a cada mudança (adicionar, excluir, salvar progresso).
     // Também publica os alertas: metas "Atrasado" (alta) e "Em atenção" (média), das mais críticas para as menos.
     function publicarResumo() {
-      var total = 0, andamento = 0, alertas = [];
+      var total = 0, andamento = 0, soma = 0, alertas = [], proximas = [];
       CATS.forEach(function (c) {
         idsDaCat(c).forEach(function (i) {
-          var d = E(i);
+          var d = E(i), pc = parseInt(d.alc, 10) || 0, falta;
           total++; if (d.cls !== "baixa") andamento++;
+          // "Metas mais próximas de bater": já passaram de 70% e ainda não chegaram a 100%
+          if (pc >= 70 && pc < 100 && d.metaVal > d.real) {
+            falta = Math.round((d.metaVal - d.real) * 100) / 100;
+            proximas.push({ id: i, titulo: d.titulo, res: d.res, meta: d.meta, alc: pc, falta: fmtU(falta, d.un), cat: c.nome });
+          }
+          soma += Math.min(parseInt(d.alc, 10) || 0, 100);
           if (d.cls === "alta" || d.cls === "media")
             alertas.push({ id: i, titulo: d.titulo, cls: d.cls, res: d.res, meta: d.meta, alc: parseInt(d.alc, 10) || 0, resp: X(i).resp, cat: c.nome, atual: d.atual });
         });
       });
       alertas.sort(function (a, b) { return (a.cls === b.cls ? 0 : a.cls === "alta" ? -1 : 1) || a.alc - b.alc; });
-      gravarLS(CH_RESUMO, { total: total, andamento: andamento, alertas: alertas, em: new Date().toISOString() });
+      proximas.sort(function (a, b) { return b.alc - a.alc; });
+      gravarLS(CH_RESUMO, { total: total, andamento: andamento, media: total ? Math.round(soma / total) : 0, alertas: alertas, proximas: proximas, em: new Date().toISOString() });
     }
 
     // Troca de categoria: refaz os cards, a tabela e o painel. Com "manter", preserva a seleção e a busca
@@ -598,8 +596,8 @@
       t("m-real-meta", d.meta); t("m-real-pct", d.alc);
       erroProg(""); infoProg(x); fecharConfirmacao();
       if (msgInfo) t("m-real-info", msgInfo);
-      desenhar(d, "m-svg");
       if (!modal.open) modal.showModal();
+      desenhar(d, "m-svg"); // depois de abrir a janela, para a animação ser vista
     }
 
     document.getElementById("m-real").addEventListener("input", function (e) {
@@ -839,7 +837,7 @@
     renderCat("gat");
 
     // Link vindo do painel inicial (indicadores.html#<id da meta>): abre a categoria e seleciona a meta
-    (function () {
+    function abrirPorHash() {
       var h = decodeURIComponent((location.hash || "").slice(1)), c;
       if (!h) return;
       c = CATS.filter(function (x) { return idsDaCat(x).indexOf(h) >= 0; })[0];
@@ -848,9 +846,12 @@
       if (atual !== h) selecionar(h);
       var tr = tbody.querySelector('tr[data-id="' + h + '"]');
       if (tr) tr.scrollIntoView({ block: "center" });
-    })();
+    }
+    abrirPorHash();
+    window.addEventListener("hashchange", abrirPorHash); // links do sininho estando já nesta tela
   </script>
 
+  <script src="sino.js"></script>
   <script src="sync.js"></script>
 </body>
 </html>
